@@ -151,7 +151,7 @@
   // ---------- Portfolio library ----------
   const lib = document.getElementById('lib');
   if (lib) {
-    const state = { tab: 'all', q: '', sort: 'featured', f: { niche: new Set(), ad_type: new Set(), format: new Set(), awareness_stage: new Set(), brand_name: new Set(), language: new Set() } };
+    const state = { tab: 'all', lang: 'all', q: '', sort: 'featured', f: { niche: new Set(), ad_type: new Set(), format: new Set(), awareness_stage: new Set(), brand_name: new Set(), language: new Set() } };
     const FILTERS = [
       ['niche', 'Niche', v => v],
       ['ad_type', 'Ad type', v => cap(v)],
@@ -170,7 +170,14 @@
     // Filter chips: only filters with 2+ values
     const chipsEl = document.getElementById('chips');
     const chevron = '<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>';
-    const active = FILTERS.filter(([k]) => new Set(ADS.map(a => a[k])).size > 1);
+    // Language has its own switch (All languages / English / German), always shown
+    const langEl = document.getElementById('langs');
+    const langDefs = [['all', 'All<span class="wide"> languages</span>', ADS.length], ['en', 'English'], ['de', 'German']]
+      .map(([k, l, n]) => [k, l, n ?? ADS.filter(a => a.language === k).length]);
+    langEl.innerHTML = langDefs.map(([k, l, n]) => `<button class="tab" role="tab" data-lang="${k}" aria-selected="${k === 'all'}"${n ? '' : ' disabled'}>${l}<span class="count">${n}</span></button>`).join('');
+    langEl.addEventListener('click', e => { const t = e.target.closest('.tab'); if (!t || t.disabled) return; state.lang = t.dataset.lang; langEl.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t)); render(); });
+
+    const active = FILTERS.filter(([k]) => k !== 'language' && new Set(ADS.map(a => a[k])).size > 1);
     chipsEl.innerHTML = active.map(([k, label, fmt]) => {
       let vals = [...new Set(ADS.map(a => a[k]))];
       vals.sort(k === 'awareness_stage' ? (x, y) => STAGE_ORDER.indexOf(x) - STAGE_ORDER.indexOf(y) : (x, y) => fmt(x).localeCompare(fmt(y)));
@@ -196,6 +203,7 @@
     addEventListener('keydown', e => { if (e.key === 'Escape') closePops(); });
     function clearAll() {
       Object.values(state.f).forEach(s => s.clear()); state.q = ''; document.getElementById('q').value = '';
+      state.lang = 'all'; langEl.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x.dataset.lang === 'all'));
       chipsEl.querySelectorAll('input').forEach(i => i.checked = false); render();
     }
     document.getElementById('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
@@ -203,6 +211,7 @@
 
     function current() {
       let list = ADS.filter(a => (state.tab === 'all' || a.format === state.tab)
+        && (state.lang === 'all' || a.language === state.lang)
         && Object.entries(state.f).every(([k, s]) => !s.size || s.has(a[k]))
         && (!state.q || [a.brand_name, a.product, a.niche, a.ad_type, a.headline, a.primary_text].join(' ').toLowerCase().includes(state.q)));
       if (state.sort === 'brand') list = list.slice().sort((x, y) => x.brand_name.localeCompare(y.brand_name) || x.sort_order - y.sort_order);
@@ -215,7 +224,7 @@
       const list = current();
       const nFilters = Object.values(state.f).reduce((n, s) => n + s.size, 0);
       chipsEl.querySelectorAll('.chip').forEach(c => { const n = state.f[c.dataset.chip].size; const b = c.querySelector('.n'); b.hidden = !n; b.textContent = n; c.classList.toggle('active', !!n); });
-      document.getElementById('clear-all').hidden = !(nFilters || state.q);
+      document.getElementById('clear-all').hidden = !(nFilters || state.q || state.lang !== 'all');
       document.getElementById('count').textContent = `${list.length} ${list.length === 1 ? 'ad' : 'ads'}`;
       empty.hidden = list.length > 0;
       draw();
