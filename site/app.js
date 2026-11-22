@@ -148,6 +148,53 @@
     bindCards(wall, () => pick);
   }
 
+  // ---------- Homepage reel (Atria-style carousel) ----------
+  // Video ads go here once they exist; until then the 4:5 statics fill it.
+  const reel = document.getElementById('reel');
+  if (reel) {
+    const vids = ADS.filter(a => a.format === 'video');
+    const list = (vids.length >= 5 ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
+    const track = reel.querySelector('.reel-track');
+    track.innerHTML = list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}. Open ad details">
+      <img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy"></button>`).join('');
+    const cards = [...track.children];
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      const r = track.getBoundingClientRect(), mid = r.left + r.width / 2;
+      cards.forEach(c => {
+        const b = c.getBoundingClientRect();
+        const d = Math.max(-2.5, Math.min(2.5, ((b.left + b.width / 2) - mid) / b.width));
+        c.style.transform = `perspective(1200px) rotateY(${(-d * 9).toFixed(2)}deg) scale(${(1 - Math.min(Math.abs(d), 2) * 0.09).toFixed(3)})`;
+        c.style.opacity = (1 - Math.min(Math.abs(d), 2.5) * 0.18).toFixed(2);
+        c.classList.toggle('is-center', Math.abs(d) < 0.5);
+      });
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
+    track.addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue);
+    const stepBy = dir => { const w = cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0); track.scrollBy({ left: dir * w, behavior: 'smooth' }); };
+    reel.querySelector('[data-reel-prev]').addEventListener('click', () => stepBy(-1));
+    reel.querySelector('[data-reel-next]').addEventListener('click', () => stepBy(1));
+    // start in the middle so cards show on both sides
+    requestAnimationFrame(() => { const c = cards[Math.floor(cards.length / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
+    track.addEventListener('click', e => { const c = e.target.closest('.reel-card'); if (c) openAd(c.dataset.slug, list); });
+  }
+
+  // ---------- Homepage statics rows (two marquees, opposite directions) ----------
+  const rows = document.querySelectorAll('.marquee[data-row]');
+  if (rows.length) {
+    const used = new Set(reel ? [...reel.querySelectorAll('.reel-card')].map(c => c.dataset.slug) : []);
+    const pool = ADS.filter(a => !used.has(a.slug));
+    const half = Math.ceil(pool.length / 2);
+    rows.forEach((row, k) => {
+      const items = k === 0 ? pool.slice(0, half) : pool.slice(half);
+      const html = items.map(a => `<button class="mq-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}"><img src="${esc(a.media)}" alt="" loading="lazy" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"></button>`).join('');
+      row.querySelector('.mq-track').innerHTML = html + html.replace(/<button /g, '<button tabindex="-1" aria-hidden="true" ');
+      row.addEventListener('click', e => { const c = e.target.closest('.mq-card'); if (c) openAd(c.dataset.slug, items); });
+    });
+  }
+
   // ---------- Portfolio library ----------
   const lib = document.getElementById('lib');
   if (lib) {
