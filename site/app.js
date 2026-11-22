@@ -165,8 +165,9 @@
       cards.forEach(c => {
         const b = c.getBoundingClientRect();
         const d = Math.max(-2.5, Math.min(2.5, ((b.left + b.width / 2) - mid) / b.width));
-        c.style.transform = `perspective(1200px) rotateY(${(-d * 9).toFixed(2)}deg) scale(${(1 - Math.min(Math.abs(d), 2) * 0.09).toFixed(3)})`;
-        c.style.opacity = (1 - Math.min(Math.abs(d), 2.5) * 0.18).toFixed(2);
+        // Atria: cards sit on a gentle curve; the outer edge of each side card turns away
+        c.style.transform = 'perspective(1100px) rotateY(' + (d * 7).toFixed(2) + 'deg)';
+        c.style.opacity = '1';
         c.classList.toggle('is-center', Math.abs(d) < 0.5);
       });
     };
@@ -282,4 +283,23 @@
     const m = location.hash.match(/^#ad=(.+)$/);
     if (m) openAd(decodeURIComponent(m[1]), ADS);
   }
+})();
+
+// Brief parts: open one at a time and swap the preview
+(function () {
+  const list = document.querySelector('.bp-list'), img = document.getElementById('bp-img');
+  if (!list || !img) return;
+  const preview = img.parentElement, grid = preview.parentElement, mq = matchMedia('(max-width: 860px)');
+  // phones: the preview sits inside the open item, under its text
+  const place = () => { const open = list.querySelector('.bp-item.open .bp-body'); if (mq.matches && open) open.appendChild(preview); else if (preview.parentElement !== grid) grid.appendChild(preview); };
+  mq.addEventListener('change', place); place();
+  list.addEventListener('click', e => {
+    const head = e.target.closest('.bp-head'); if (!head) return;
+    list.querySelectorAll('.bp-item').forEach(li => { const on = li.contains(head); li.classList.toggle('open', on); li.querySelector('.bp-head').setAttribute('aria-expanded', on); });
+    place();
+    if (img.getAttribute('src') !== head.dataset.img) {
+      img.style.opacity = '0';
+      const pre = new Image(); pre.onload = () => { img.src = head.dataset.img; img.alt = head.dataset.alt; img.style.opacity = '1'; img.parentElement.scrollTop = 0; }; pre.src = head.dataset.img;
+    }
+  });
 })();
