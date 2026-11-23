@@ -3,13 +3,14 @@
   var ENDPOINT = 'https://brvebfxaexxjghvwyidy.supabase.co/functions/v1/site-inquiry';
   // Booking link (Cal.com, Calendly, ...). Empty = the last screen says Pascal will email a time.
   var BOOKING_URL = 'https://cal.com/pascalsterzik/creative-strategy-chat';
+  var CAL_LINK = 'pascalsterzik/creative-strategy-chat';
 
   // One question per screen. affirmation = short reaction shown on arrival, {name} = first name.
   var STEPS = [
     { id: 'intro', type: 'intro' },
-    { id: 'name', type: 'text', required: true, prompt: "First, what's your name?", placeholder: 'Your name', autocomplete: 'name' },
-    { id: 'email', type: 'email', required: true, affirmation: 'Nice to meet you, {name}.', prompt: "What's your email?", helper: 'So I can send you the call details.', placeholder: 'you@yourbrand.com', autocomplete: 'email' },
-    { id: 'company', type: 'text', required: true, affirmation: 'Thanks.', prompt: 'What brand or company are you with?', placeholder: 'Brand name or website', autocomplete: 'organization' },
+    { id: 'name', type: 'text', required: true, prompt: "Before we start, what should I call you?", helper: "(this step is mandatory because otherwise, I'd call you [FIRSTNAME]... and that name's awful, right?)", placeholder: 'Your name', autocomplete: 'name' },
+    { id: 'email', type: 'email', required: true, affirmation: 'What a fabulous name. Much better than [FIRSTNAME]...', prompt: "What's your email, {name}?", helper: 'So I can send you hilarious ads of course.', placeholder: 'you@yourbrand.com', autocomplete: 'email' },
+    { id: 'company', type: 'text', required: true, affirmation: 'Nice! This is easy, right?', prompt: 'What brand or company are you with?', placeholder: 'Brand name or website', autocomplete: 'organization' },
     { id: 'role', type: 'cards', required: true, affirmation: 'Got it.', prompt: 'Which one fits you best?', options: [
       ['I run a brand', 'Founder or marketing team'], ['I work at an agency', 'We run ads for brands'], ["I'm hiring", 'Recruiter or hiring manager']] },
     { id: 'looking_for', type: 'cards', required: true, affirmation: 'Okay.', prompt: 'What are you looking for?', options: [
@@ -45,8 +46,8 @@
     paintDots();
     if (s.type === 'intro') {
       nav.hidden = true;
-      stage.innerHTML = '<div class="screen intro"><p class="kicker">Book a call</p><h1>Let\'s talk about your ads</h1>' +
-        '<p class="lead">Answer 9 quick questions. It takes about a minute. Then we set up a call.</p>' +
+      stage.innerHTML = '<div class="screen intro"><p class="kicker">Book a call</p><h1>Let\'s talk business</h1>' +
+        '<p class="lead">Answer a few questions and if you qualify, you can book a call at the end. We don\'t wanna waste each other\'s time, do we? Great! Then...</p>' +
         '<button type="button" class="btn btn-primary btn-big" id="start">Get started</button></div>';
       document.getElementById('start').onclick = function () { go(1); };
       progress.textContent = '';
@@ -132,12 +133,20 @@
         err.textContent = (e && e.message ? e.message + ' ' : '') + 'You can also email me at pascal@pascalsterzik.com.'; err.hidden = false;
       });
   }
+  // Cal.com inline embed (official loader), prefilled with the answers
+  function calEmbed(el) {
+    (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    Cal('init', 'chat', { origin: 'https://app.cal.com' });
+    Cal.ns.chat('inline', { elementOrSelector: el, calLink: CAL_LINK, config: { layout: 'month_view', theme: 'dark', name: (answers.name || '').trim(), email: (answers.email || '').trim() } });
+    Cal.ns.chat('ui', { theme: 'dark', cssVarsPerTheme: { dark: { 'cal-brand': '#F2A43A' } }, hideEventTypeDetails: false, layout: 'month_view' });
+  }
   function done() {
     nav.hidden = true; dots.hidden = true; progress.textContent = 'Sent';
-    var book = BOOKING_URL
-      ? '<p class="lead">Last step: pick a time that works for you.</p><a class="btn btn-primary btn-big" href="' + esc(BOOKING_URL) + '" target="_blank" rel="noopener">Pick a time</a>'
-      : '<p class="lead">I got your answers and I read every one myself. I\'ll email you soon to set up a call.</p><a class="btn btn-ghost btn-big" href="/portfolio">Back to the portfolio</a>';
-    stage.innerHTML = '<div class="screen intro"><p class="kicker">Done</p><h1>Thanks, ' + esc(first()) + '!</h1>' + book + '</div>';
+    document.body.classList.add('booking');
+    stage.innerHTML = '<div class="screen intro"><p class="kicker">Done</p><h1>Thanks, ' + esc(first()) + '!</h1>' +
+      '<p class="lead">Last step: pick a time that works for you.</p><div class="cal-embed" id="cal-inline"></div>' +
+      '<p class="cal-fallback">Calendar not showing? <a href="' + esc(BOOKING_URL) + '" target="_blank" rel="noopener">Open it here</a>.</p></div>';
+    calEmbed('#cal-inline');
   }
 
   form.addEventListener('submit', function (e) { e.preventDefault(); go(1); });
