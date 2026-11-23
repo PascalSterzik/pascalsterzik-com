@@ -8,20 +8,16 @@
   // One question per screen. affirmation = short reaction shown on arrival, {name} = first name.
   var STEPS = [
     { id: 'intro', type: 'intro' },
-    { id: 'name', type: 'text', required: true, prompt: "Before we start, what should I call you?", helper: "(this step is mandatory because otherwise, I'd call you [FIRSTNAME]... and that name's awful, right?)", placeholder: 'Your name', autocomplete: 'name' },
-    { id: 'email', type: 'email', required: true, affirmation: 'What a fabulous name. Much better than [FIRSTNAME]...', prompt: "What's your email, {name}?", helper: 'So I can send you hilarious ads of course.', placeholder: 'you@yourbrand.com', autocomplete: 'email' },
-    { id: 'company', type: 'text', required: true, affirmation: 'Nice! This is easy, right?', prompt: 'What brand or company are you with?', placeholder: 'Brand name or website', autocomplete: 'organization' },
-    { id: 'role', type: 'cards', required: true, affirmation: 'Got it.', prompt: 'Which one fits you best?', options: [
-      ['I run a brand', 'Founder or marketing team'], ['I work at an agency', 'We run ads for brands'], ["I'm hiring", 'Recruiter or hiring manager']] },
-    { id: 'looking_for', type: 'cards', required: true, affirmation: 'Okay.', prompt: 'What are you looking for?', options: [
+    { id: 'looking_for', type: 'cards', required: true, prompt: 'What are you looking for?', options: [
       ['Full-time creative strategist'], ['Freelance or project work'], ['Not sure yet']] },
-    { id: 'monthly_ad_spend', type: 'cards', required: true, affirmation: 'Makes sense.', prompt: 'How much do you spend on ads each month?', options: [
-      ['Under $10k'], ['$10k to $50k'], ['$50k to $250k'], ['$250k+'], ["I'd rather not say"]] },
     { id: 'help_with', type: 'multi', required: true, affirmation: 'Good to know.', prompt: 'What do you want help with?', helper: 'Pick all that fit.', options: [
       ['New angles and hooks'], ['Static ads'], ['Video ad scripts and briefs'], ['Creative testing and analysis'], ['A full creative strategy']] },
-    { id: 'start_when', type: 'cards', required: true, affirmation: 'Almost done.', prompt: 'When do you want to start?', options: [
-      ['Right away'], ['In the next month'], ['In 1 to 3 months'], ['Just looking for now']] },
-    { id: 'notes', type: 'textarea', affirmation: 'Last one, {name}.', prompt: 'Anything else I should know?', helper: 'Optional.', placeholder: 'Your current ads, what is working, what is not...' },
+    { id: 'role', type: 'cards', required: true, affirmation: 'Got it.', prompt: 'Which one fits you best?', options: [
+      ['I run a brand', 'Founder or marketing team'], ['I work at an agency', 'We run ads for brands'], ["I'm hiring", 'Recruiter or hiring manager']] },
+    { id: 'monthly_ad_spend', type: 'cards', required: true, affirmation: 'Makes sense.', prompt: 'How much do you spend on ads each month?', options: [
+      ['Under $100k'], ['$100k to $500k'], ['$500k to $1M'], ['$1M to $5M'], ['$5M+']] },
+    { id: 'company', type: 'text', required: true, affirmation: 'Nice! This is easy, right?', prompt: 'What brand or company are you with?', placeholder: 'Brand name or website', autocomplete: 'organization' },
+    { id: 'notes', type: 'textarea', affirmation: 'Last one.', prompt: 'Anything else I should know?', helper: 'Optional.', placeholder: 'Your current ads, what is working, what is not...' },
   ];
 
   var stage = document.getElementById('stage'), nav = document.getElementById('book-nav'), next = document.getElementById('next'),
@@ -55,7 +51,7 @@
     }
     nav.hidden = false;
     back.hidden = false;
-    next.textContent = i === STEPS.length - 1 ? 'Send' : 'Continue';
+    next.textContent = i === STEPS.length - 1 ? 'Check if I qualify' : 'Continue';
     progress.textContent = 'Question ' + i + ' of ' + Q;
     var val = answers[s.id];
     var showAff = s.affirmation && dir > 0 && lastShown[s.id] !== JSON.stringify(answers[STEPS[i - 1].id]);
@@ -119,7 +115,7 @@
 
   function send() {
     if (sending) return;
-    sending = true; next.disabled = true; next.textContent = 'Sending...';
+    sending = true; next.disabled = true; next.textContent = 'Checking...';
     var payload = { website_url: form.website_url.value, source_page: document.referrer || location.href };
     STEPS.forEach(function (s) { if (s.type !== 'intro') payload[s.id] = answers[s.id] == null ? null : answers[s.id]; });
     fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
@@ -129,22 +125,28 @@
         done();
       })
       .catch(function (e) {
-        sending = false; next.disabled = false; next.textContent = 'Send';
+        sending = false; next.disabled = false; next.textContent = 'Check if I qualify';
         err.textContent = (e && e.message ? e.message + ' ' : '') + 'You can also email me at pascal@pascalsterzik.com.'; err.hidden = false;
       });
+  }
+  function summary() {
+    var out = [];
+    STEPS.forEach(function (st) { if (st.type === 'intro') return; var v = answers[st.id]; if (v == null || v === '' || (v.length === 0)) return;
+      out.push(st.prompt + ' ' + (Array.isArray(v) ? v.join(', ') : v)); });
+    return out.join('\n');
   }
   // Cal.com inline embed (official loader), prefilled with the answers
   function calEmbed(el) {
     (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
     Cal('init', 'chat', { origin: 'https://app.cal.com' });
-    Cal.ns.chat('inline', { elementOrSelector: el, calLink: CAL_LINK, config: { layout: 'month_view', theme: 'dark', name: (answers.name || '').trim(), email: (answers.email || '').trim() } });
+    Cal.ns.chat('inline', { elementOrSelector: el, calLink: CAL_LINK, config: { layout: 'month_view', theme: 'dark', notes: summary() } });
     Cal.ns.chat('ui', { theme: 'dark', cssVarsPerTheme: { dark: { 'cal-brand': '#F2A43A' } }, hideEventTypeDetails: false, layout: 'month_view' });
   }
   function done() {
     nav.hidden = true; dots.hidden = true; progress.textContent = 'Sent';
     document.body.classList.add('booking');
-    stage.innerHTML = '<div class="screen intro"><p class="kicker">Done</p><h1>Thanks, ' + esc(first()) + '!</h1>' +
-      '<p class="lead">Last step: pick a time that works for you.</p><div class="cal-embed" id="cal-inline"></div>' +
+    stage.innerHTML = '<div class="screen intro"><p class="kicker">Good news</p><h1>You' + "'" + 're qualified for the call!</h1>' +
+      '<p class="lead">Pick a time that works for you.</p><div class="cal-embed" id="cal-inline"></div>' +
       '<p class="cal-fallback">Calendar not showing? <a href="' + esc(BOOKING_URL) + '" target="_blank" rel="noopener">Open it here</a>.</p></div>';
     calEmbed('#cal-inline');
   }
