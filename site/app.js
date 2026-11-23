@@ -158,6 +158,7 @@
     track.innerHTML = list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}">
       <img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy"></button>`).join('');
     const cards = [...track.children];
+    const S0 = 1.08, R = 0.82, LNR = Math.log(R);
     let raf = 0;
     const paint = () => {
       raf = 0;
@@ -165,13 +166,13 @@
       cards.forEach(c => {
         // distance from the center in card steps, from layout (not the transformed box)
         const w = c.offsetWidth, d = (c.offsetLeft - track.scrollLeft + w / 2 - mid) / (w + gap);
-        // Atria: cards sit on a gentle curve; the center card is clearly bigger, the rest shrink with distance
+        // Atria: cards sit on a gentle curve; the center card is biggest and every step out is smaller again
         const a = Math.abs(d);
-        const s = 1.08 - 0.2 * Math.min(a, 1) - 0.1 * Math.max(0, Math.min(a, 2) - 1);
+        const s = S0 * Math.pow(R, a);
         // pull shrunken cards inward so the gaps stay even (integral of the scale change)
-        const I = a <= 1 ? 0.08 * a - 0.1 * a * a : a <= 2 ? -0.02 - 0.12 * (a - 1) - 0.05 * (a - 1) * (a - 1) : -0.19 - 0.22 * (a - 2);
+        const I = S0 * (Math.pow(R, a) - 1) / LNR - a;
         const x = Math.sign(d) * w * I;
-        c.style.transform = 'translateX(' + x.toFixed(1) + 'px) perspective(1100px) rotateY(' + (Math.max(-2.5, Math.min(2.5, d)) * 7).toFixed(2) + 'deg) scale(' + s.toFixed(3) + ')';
+        c.style.transform = 'translateX(' + x.toFixed(1) + 'px) perspective(1100px) rotateY(' + (Math.max(-1.5, Math.min(1.5, d)) * 6).toFixed(2) + 'deg) scale(' + s.toFixed(3) + ')';
         c.style.zIndex = String(10 - Math.min(9, Math.round(a * 2)));
         c.style.opacity = '1';
         c.classList.toggle('is-center', Math.abs(d) < 0.5);
@@ -180,14 +181,37 @@
     const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
     track.addEventListener('scroll', queue, { passive: true });
     addEventListener('resize', queue);
-    const stepBy = dir => { const w = cards[0].offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0); track.scrollBy({ left: dir * w, behavior: 'smooth' }); };
-    reel.querySelector('[data-reel-prev]').addEventListener('click', () => stepBy(-1));
-    reel.querySelector('[data-reel-next]').addEventListener('click', () => stepBy(1));
     // start in the middle so cards show on both sides
     requestAnimationFrame(() => { const c = cards[Math.floor(cards.length / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
     // a side card slides to the center; the center card does nothing
     const centerOn = c => track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' });
-    track.addEventListener('click', e => { const c = e.target.closest('.reel-card'); if (c && !c.classList.contains('is-center')) centerOn(c); });
+    // mouse drag on desktop: grab and swipe left or right, then snap to the nearest card
+    let drag = null, moved = false;
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, left: track.scrollLeft, id: e.pointerId }; moved = false;
+      track.classList.add('dragging');
+    });
+    addEventListener('pointermove', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) moved = true;
+      track.scrollLeft = drag.left - dx;
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      drag = null; track.classList.remove('dragging');
+      // snap: the card closest to the middle slides to the center
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      const near = cards.reduce((b, c) => Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(b.offsetLeft + b.offsetWidth / 2 - mid) ? c : b, cards[0]);
+      centerOn(near);
+    };
+    addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
+    track.addEventListener('dragstart', e => e.preventDefault());
+    track.addEventListener('click', e => {
+      if (moved) { moved = false; return; } // a drag is not a click
+      const c = e.target.closest('.reel-card'); if (c && !c.classList.contains('is-center')) centerOn(c);
+    });
   }
 
   // ---------- Homepage statics rows (two marquees, opposite directions) ----------
@@ -198,9 +222,9 @@
     const half = Math.ceil(pool.length / 2);
     rows.forEach((row, k) => {
       const items = k === 0 ? pool.slice(0, half) : pool.slice(half);
-      const html = items.map(a => `<button class="mq-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}"><img src="${esc(a.media)}" alt="" loading="lazy" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"></button>`).join('');
-      row.querySelector('.mq-track').innerHTML = html + html.replace(/<button /g, '<button tabindex="-1" aria-hidden="true" ');
-      row.addEventListener('click', e => { const c = e.target.closest('.mq-card'); if (c) openAd(c.dataset.slug, items); });
+      // display only: not clickable, no hover effect
+      const html = items.map(a => `<div class="mq-card"><img src="${esc(a.media)}" alt="${esc(a.brand_name)} ad" loading="lazy" draggable="false" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"></div>`).join('');
+      row.querySelector('.mq-track').innerHTML = html + html.replace(/<div class="mq-card">/g, '<div class="mq-card" aria-hidden="true">');
     });
   }
 

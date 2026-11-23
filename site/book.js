@@ -2,7 +2,7 @@
   'use strict';
   var ENDPOINT = 'https://brvebfxaexxjghvwyidy.supabase.co/functions/v1/site-inquiry';
   // Booking link (Cal.com, Calendly, ...). Empty = the last screen says Pascal will email a time.
-  var BOOKING_URL = '';
+  var BOOKING_URL = 'https://cal.com/pascalsterzik/creative-strategy-chat';
 
   // One question per screen. affirmation = short reaction shown on arrival, {name} = first name.
   var STEPS = [
