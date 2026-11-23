@@ -155,18 +155,24 @@
     const vids = ADS.filter(a => a.format === 'video');
     const list = (vids.length >= 5 ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
     const track = reel.querySelector('.reel-track');
-    track.innerHTML = list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}. Open ad details">
+    track.innerHTML = list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}">
       <img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy"></button>`).join('');
     const cards = [...track.children];
     let raf = 0;
     const paint = () => {
       raf = 0;
-      const r = track.getBoundingClientRect(), mid = r.left + r.width / 2;
+      const mid = track.clientWidth / 2, gap = parseFloat(getComputedStyle(track).columnGap) || 0;
       cards.forEach(c => {
-        const b = c.getBoundingClientRect();
-        const d = Math.max(-2.5, Math.min(2.5, ((b.left + b.width / 2) - mid) / b.width));
-        // Atria: cards sit on a gentle curve; the outer edge of each side card turns away
-        c.style.transform = 'perspective(1100px) rotateY(' + (d * 7).toFixed(2) + 'deg)';
+        // distance from the center in card steps, from layout (not the transformed box)
+        const w = c.offsetWidth, d = (c.offsetLeft - track.scrollLeft + w / 2 - mid) / (w + gap);
+        // Atria: cards sit on a gentle curve; the center card is clearly bigger, the rest shrink with distance
+        const a = Math.abs(d);
+        const s = 1.08 - 0.2 * Math.min(a, 1) - 0.1 * Math.max(0, Math.min(a, 2) - 1);
+        // pull shrunken cards inward so the gaps stay even (integral of the scale change)
+        const I = a <= 1 ? 0.08 * a - 0.1 * a * a : a <= 2 ? -0.02 - 0.12 * (a - 1) - 0.05 * (a - 1) * (a - 1) : -0.19 - 0.22 * (a - 2);
+        const x = Math.sign(d) * w * I;
+        c.style.transform = 'translateX(' + x.toFixed(1) + 'px) perspective(1100px) rotateY(' + (Math.max(-2.5, Math.min(2.5, d)) * 7).toFixed(2) + 'deg) scale(' + s.toFixed(3) + ')';
+        c.style.zIndex = String(10 - Math.min(9, Math.round(a * 2)));
         c.style.opacity = '1';
         c.classList.toggle('is-center', Math.abs(d) < 0.5);
       });
@@ -174,12 +180,14 @@
     const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
     track.addEventListener('scroll', queue, { passive: true });
     addEventListener('resize', queue);
-    const stepBy = dir => { const w = cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0); track.scrollBy({ left: dir * w, behavior: 'smooth' }); };
+    const stepBy = dir => { const w = cards[0].offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0); track.scrollBy({ left: dir * w, behavior: 'smooth' }); };
     reel.querySelector('[data-reel-prev]').addEventListener('click', () => stepBy(-1));
     reel.querySelector('[data-reel-next]').addEventListener('click', () => stepBy(1));
     // start in the middle so cards show on both sides
     requestAnimationFrame(() => { const c = cards[Math.floor(cards.length / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
-    track.addEventListener('click', e => { const c = e.target.closest('.reel-card'); if (c) openAd(c.dataset.slug, list); });
+    // a side card slides to the center; the center card does nothing
+    const centerOn = c => track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' });
+    track.addEventListener('click', e => { const c = e.target.closest('.reel-card'); if (c && !c.classList.contains('is-center')) centerOn(c); });
   }
 
   // ---------- Homepage statics rows (two marquees, opposite directions) ----------
