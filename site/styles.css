@@ -540,3 +540,14 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 900; font-variation-
 .join-steps h3 { font-size: 1.55rem; }
 .bp-num, .join-steps li::before, .steps li::before { font-variation-settings: 'opsz' 72; }
 .reel .reel-track, .reel .reel-track.dragging { scroll-snap-type: none; }
+
+/* ---------- Round 10 ---------- */
+/* solid header: the 86% see-through one let the white page show through at the top */
+html { background: var(--navy-900); }
+.site-header { background: var(--navy-900); backdrop-filter: none; -webkit-backdrop-filter: none; }
+/* struck word stays white like the rest of the line; only the strike line is amber */
+.strike { color: inherit; }
+/* testimonial cards: solid, no texture or grey overlay behind the text */
+.t-card { background: var(--navy-800); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 18px 40px -20px rgba(0,0,0,.7); position: relative; z-index: 1; }
+.t-card blockquote { color: #F1F4F8; }
+.t-card figcaption { color: #C3CDDA; }
