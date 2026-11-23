@@ -155,9 +155,18 @@
     const vids = ADS.filter(a => a.format === 'video');
     const list = (vids.length >= 5 ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
     const track = reel.querySelector('.reel-track');
-    track.innerHTML = list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}">
+    // endless loop: the list sits in the track three times; when you scroll far into an outer copy,
+    // the track jumps back by exactly one copy, which looks the same, so you can scroll forever either way
+    const one = copy => list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}"${copy === 1 ? '' : ' tabindex="-1" aria-hidden="true"'} aria-label="${esc(a.brand_name)}: ${esc(a.headline)}">
       <img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy"></button>`).join('');
-    const cards = [...track.children];
+    track.innerHTML = one(0) + one(1) + one(2);
+    const cards = [...track.children], n = list.length;
+    const setW = () => cards[n].offsetLeft - cards[0].offsetLeft;
+    const wrap = () => {
+      const sw = setW(), pos = track.scrollLeft;
+      if (pos < sw) track.scrollLeft = pos + sw;
+      else if (pos >= sw * 2) track.scrollLeft = pos - sw;
+    };
     const S0 = 1.08, R = 0.82, LNR = Math.log(R);
     let raf = 0;
     const paint = () => {
@@ -179,10 +188,27 @@
       });
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
-    track.addEventListener('scroll', queue, { passive: true });
+    // wrap once the scroll comes to rest (never mid-swipe, so momentum and snapping stay smooth)
+    // snapping is done here, not with CSS scroll-snap: Chrome re-snaps to the card it remembered and would undo the loop jump
+    let idle = 0, touching = false;
+    const nearest = () => { const m = track.scrollLeft + track.clientWidth / 2; return cards.reduce((b, c) => Math.abs(c.offsetLeft + c.offsetWidth / 2 - m) < Math.abs(b.offsetLeft + b.offsetWidth / 2 - m) ? c : b, cards[0]); };
+    const settle = () => {
+      if (drag || touching) return;
+      wrap();
+      const c = nearest(), target = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2;
+      if (Math.abs(track.scrollLeft - target) > 1) track.scrollTo({ left: target, behavior: 'smooth' });
+      paint();
+    };
+    track.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+    track.addEventListener('touchend', () => { touching = false; clearTimeout(idle); idle = setTimeout(settle, 200); }, { passive: true });
+    track.addEventListener('scroll', () => {
+      queue();
+      if (!('onscrollend' in window)) { clearTimeout(idle); idle = setTimeout(settle, 160); }
+    }, { passive: true });
+    track.addEventListener('scrollend', settle);
     addEventListener('resize', queue);
-    // start in the middle so cards show on both sides
-    requestAnimationFrame(() => { const c = cards[Math.floor(cards.length / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
+    // start in the middle copy so cards show on both sides
+    requestAnimationFrame(() => { const c = cards[n + Math.floor(n / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
     // a side card slides to the center; the center card does nothing
     const centerOn = c => track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' });
     // mouse drag on desktop: grab and swipe left or right, then snap to the nearest card
@@ -197,14 +223,16 @@
       const dx = e.clientX - drag.x;
       if (Math.abs(dx) > 4) moved = true;
       track.scrollLeft = drag.left - dx;
+      // long drags wrap too: shift the drag origin by the same copy width
+      const sw = setW(), pos = track.scrollLeft;
+      if (pos < sw) { drag.left += sw; track.scrollLeft = pos + sw; }
+      else if (pos >= sw * 2) { drag.left -= sw; track.scrollLeft = pos - sw; }
     });
     const endDrag = () => {
       if (!drag) return;
       drag = null; track.classList.remove('dragging');
       // snap: the card closest to the middle slides to the center
-      const mid = track.scrollLeft + track.clientWidth / 2;
-      const near = cards.reduce((b, c) => Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(b.offsetLeft + b.offsetWidth / 2 - mid) ? c : b, cards[0]);
-      centerOn(near);
+      centerOn(nearest());
     };
     addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
     track.addEventListener('dragstart', e => e.preventDefault());
