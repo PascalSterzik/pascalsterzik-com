@@ -12,7 +12,12 @@
   const initials = n => n.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const color = n => AVATAR[brands.indexOf(n) % AVATAR.length];
   // Design phase: logos from each brand's own site. In the build this is portfolio_ads.brand_logo_url.
-  const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png' };
+  const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png',
+    'PetLab Co.': '/logos/petlab.png', 'Liquid Death': '/logos/liquid-death.png', 'MUD\\WTR': '/logos/mudwtr.png', 'Mars Men': '/logos/mars-men.png', 'The Oodie': '/logos/the-oodie.png',
+    'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'True Classic': '/logos/true-classic.png', 'Scandi Gum': '/logos/scandi-gum.png',
+    'Smooche': '/logos/smooche.png', 'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
+    'The Odorless Cat': '/logos/the-odorless-cat.png', 'Resilia': '/logos/resilia.png', 'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Norse Organics': '/logos/norse-organics.png',
+    'Nero': '/logos/nero.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Primal Viking': '/logos/primal-viking.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
   const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
   const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
@@ -24,13 +29,53 @@
 
   function cardHTML(a, i) {
     const first = (a.primary_text || '').split('\n')[0];
-    return `<button class="ad-card" data-slug="${esc(a.slug)}" style="animation-delay:${Math.min(i, 12) * 60}ms" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}. Open ad details">
-      <div class="post-head">${avatar(a)}
+    const head = `<div class="post-head">${avatar(a)}
         <span><span class="post-brand">${esc(a.brand_name)}</span><br><span class="post-sponsored">Sponsored</span></span></div>
-      <p class="post-text">${esc(first)}</p>
-      <div class="post-media" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"><img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="${i < 8 ? 'eager' : 'lazy'}">${a.video_embed ? PLAY : ''}</div>
-      <div class="post-foot"><div class="meta"><div class="post-domain">${esc(a.brand_domain)}</div><div class="post-headline">${esc(a.headline)}</div></div><span class="post-cta">${esc(a.cta)}</span></div>
+      <p class="post-text">${esc(first)}</p>`;
+    const foot = `<div class="post-foot"><div class="meta"><div class="post-domain">${esc(a.brand_domain)}</div><div class="post-headline">${esc(a.headline)}</div></div><span class="post-cta">${esc(a.cta)}</span></div>`;
+    const ar = String(a.aspect_ratio).replace(':', '/');
+    const img = `<img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="${i < 8 ? 'eager' : 'lazy'}">`;
+    // video card: the video plays right in the card; the rest of the card (text, head, foot) opens the popup with the full copy
+    if (a.video_embed) return `<div class="ad-card is-video" data-slug="${esc(a.slug)}" style="animation-delay:${Math.min(i, 12) * 60}ms" tabindex="0" role="group" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}. Open ad details">
+      ${head}
+      <button type="button" class="post-media play-inline" data-play style="aspect-ratio:${ar}" aria-label="Play the ${esc(a.brand_name)} video here">${img}${PLAY}</button>
+      ${foot}
+    </div>`;
+    return `<button class="ad-card" data-slug="${esc(a.slug)}" style="animation-delay:${Math.min(i, 12) * 60}ms" aria-label="${esc(a.brand_name)}: ${esc(a.headline)}. Open ad details">
+      ${head}
+      <div class="post-media" style="aspect-ratio:${ar}">${img}</div>
+      ${foot}
     </button>`;
+  }
+  // inline video: swap the poster for the Gumlet player (sound on, the click allows it); only one plays at a time
+  const inlineURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false&muted=false';
+  function stopInline(root) {
+    (root || document).querySelectorAll('.play-inline.playing').forEach(m => {
+      const a = ADS.find(x => x.slug === m.closest('.ad-card').dataset.slug);
+      m.classList.remove('playing');
+      m.innerHTML = `<img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}">${PLAY}`;
+    });
+  }
+  function playInline(m) {
+    if (m.classList.contains('playing')) return;
+    stopInline();
+    const a = ADS.find(x => x.slug === m.closest('.ad-card').dataset.slug);
+    m.classList.add('playing');
+    m.innerHTML = `<iframe src="${esc(inlineURL(a.video_embed))}" title="${esc(a.brand_name)} video ad" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>`;
+    const fr = m.querySelector('iframe');
+    // Gumlet always autoplays muted: once playback has started, turn the sound on (player.js API; the click allows it).
+    // Unmuting right at "ready" is too early (autoplay mutes again), so it waits for "play" and retries a few times.
+    const send = (method, value) => fr.contentWindow && fr.contentWindow.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value }), '*');
+    const unmute = () => { if (!fr.isConnected) return; send('unmute'); send('setVolume', 100); };
+    const onMsg = e => {
+      if (!fr.isConnected) { removeEventListener('message', onMsg); return; }
+      if (e.source !== fr.contentWindow) return;
+      let d = e.data; try { if (typeof d === 'string') d = JSON.parse(d); } catch (_) { return; }
+      if (!d || d.context !== 'player.js') return;
+      if (d.event === 'ready') { send('addEventListener', 'play'); [700, 1600, 3000].forEach(t => setTimeout(unmute, t)); }
+      if (d.event === 'play') { unmute(); setTimeout(unmute, 300); removeEventListener('message', onMsg); }
+    };
+    addEventListener('message', onMsg);
   }
 
   // Masonry: each card goes to the shortest column, so reading order stays left to right
@@ -142,7 +187,14 @@
     });
   }
   function bindCards(el, getList) {
-    el.addEventListener('click', e => { const c = e.target.closest('.ad-card'); if (c) openAd(c.dataset.slug, getList()); });
+    el.addEventListener('click', e => {
+      const m = e.target.closest('[data-play]'); if (m) { playInline(m); return; }
+      const c = e.target.closest('.ad-card'); if (c) { stopInline(); openAd(c.dataset.slug, getList()); }
+    });
+    el.addEventListener('keydown', e => {
+      const c = e.target.classList && e.target.classList.contains('is-video') ? e.target : null;
+      if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); stopInline(); openAd(c.dataset.slug, getList()); }
+    });
   }
 
   // ---------- Homepage wall ----------
