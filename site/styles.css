@@ -589,8 +589,6 @@ html { background: var(--navy-900); }
 .reel-card.is-video.is-center { cursor: pointer; }
 .reel-card.is-video.playing { cursor: default; background: #000; }
 .reel-card iframe { display: block; width: 100%; height: 100%; border: 0; background: #000; }
-.reel-card .play-badge { transition: opacity .2s; }
-.reel-card.is-video:not(.is-center) .play-badge { opacity: 0; }
 @media (max-width: 640px) {
   .reel-track.videos { padding-left: calc(50% - 29vw); padding-right: calc(50% - 29vw); }
   .reel-card.is-video { width: 58vw; }
