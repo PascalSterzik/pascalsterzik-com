@@ -13,9 +13,9 @@
   const color = n => AVATAR[brands.indexOf(n) % AVATAR.length];
   // Design phase: logos from each brand's own site. In the build this is portfolio_ads.brand_logo_url.
   const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png',
-    'Liquid Death': '/logos/liquid-death.png', 'MUD\\WTR': '/logos/mudwtr.png', 'Mars Men': '/logos/mars-men.png', 'The Oodie': '/logos/the-oodie.png',
-    'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'True Classic': '/logos/true-classic.png', 'Scandi Gum': '/logos/scandi-gum.png',
-    'Smooche': '/logos/smooche.png', 'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
+    'Mars Men': '/logos/mars-men.png',
+    'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'Scandi Gum': '/logos/scandi-gum.png',
+    'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
     'The Odorless Cat': '/logos/the-odorless-cat.png', 'Resilia': '/logos/resilia.png', 'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Norse Organics': '/logos/norse-organics.png',
     'Nero': '/logos/nero.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Primal Viking': '/logos/primal-viking.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
