@@ -33,7 +33,7 @@
   dots.innerHTML = STEPS.slice(1).map(function () { return '<li></li>'; }).join('') + '<li></li>';
   function paintDots() {
     [].forEach.call(dots.children, function (d, k) { d.className = k < i - 1 ? 'done' : (k === i - 1 ? 'now' : ''); });
-    dots.hidden = i === 0;
+    dots.hidden = false; // the first screen already shows the steps
   }
 
   function render(dir) {
@@ -42,8 +42,8 @@
     paintDots();
     if (s.type === 'intro') {
       nav.hidden = true;
-      stage.innerHTML = '<div class="screen intro"><p class="kicker">Book a call</p><h1>Let\'s talk business</h1>' +
-        '<p class="lead">Answer a few questions and if you qualify, you can book a call at the end. We don\'t wanna waste each other\'s time, do we? Great! Then...</p>' +
+      stage.innerHTML = '<div class="screen intro"><p class="kicker">Work with me</p><h1>Let\'s work together</h1>' +
+        '<p class="lead">Answer a few questions and see if you qualify. If you do, you can book a call at the end. We don\'t wanna get on unnecessary calls, do we? Great! Then...</p>' +
         '<button type="button" class="btn btn-primary btn-big" id="start">Get started</button></div>';
       document.getElementById('start').onclick = function () { go(1); };
       progress.textContent = '';
@@ -145,7 +145,7 @@
   function done() {
     nav.hidden = true; dots.hidden = true; progress.textContent = 'Sent';
     document.body.classList.add('booking');
-    stage.innerHTML = '<div class="screen intro"><p class="kicker">Good news</p><h1>You' + "'" + 're qualified for the call!</h1>' +
+    stage.innerHTML = '<div class="screen intro"><p class="kicker">WOOHOO!</p><h1>You' + "'" + 're qualified for the call! 🥳</h1>' +
       '<p class="lead">Pick a time that works for you.</p><div class="cal-embed" id="cal-inline"></div>' +
       '<p class="cal-fallback">Calendar not showing? <a href="' + esc(BOOKING_URL) + '" target="_blank" rel="noopener">Open it here</a>.</p></div>';
     calEmbed('#cal-inline');

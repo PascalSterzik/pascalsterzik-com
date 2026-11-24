@@ -566,3 +566,12 @@ html { background: var(--navy-900); }
 .cal-embed { width: 100%; min-height: 640px; margin-top: 1.75rem; border-radius: 16px; overflow: hidden; text-align: left; }
 .cal-fallback { margin-top: 1rem; color: var(--on-dark-soft); font-size: .95rem; }
 .cal-fallback a { color: var(--amber); }
+
+/* ---------- Round 15 ---------- */
+.icon-list li, .center .icon-list li { text-align: left; display: flex; align-items: center; gap: .9rem; }
+.li-icon { flex: none; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(242,164,58,.14); color: #C77A12; }
+.tools-strip h2 { text-align: center; }
+.fit-col { display: flex; flex-direction: column; gap: 1.25rem; }
+.fit-col .fit { flex: 1; }
+.fit-btn { align-self: center; margin-top: .25rem; }
+.signature { margin-top: 1.4rem; font: 400 3.2rem/1 'Mrs Saint Delafield', cursive; color: var(--ink); }
