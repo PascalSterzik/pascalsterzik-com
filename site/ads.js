@@ -1482,28 +1482,6 @@ window.ADS = [
   "sort_order": 77
  },
  {
-  "slug": "petlab-xray-dog-video-01",
-  "brand_name": "PetLab Co.",
-  "brand_domain": "thepetlabco.com",
-  "product": "Allergy & Immune Chews",
-  "niche": "Pet health supplements",
-  "ad_type": "animated explainer",
-  "format": "video",
-  "awareness_stage": "problem_aware",
-  "language": "en",
-  "primary_text": "Your dog can't tell you something's wrong. But paw licking, itching and head shaking can.\n\nMost owners ignore these signs or reach for a shampoo. That only treats the surface.\n\nThese 3 behaviors often start in the gut.\n\nPetLab Co. Allergy & Immune chews support healthy skin, normal immune function and seasonal sensitivities. They are made with salmon oil, colostrum, postbiotics, turmeric and vitamin E.\n\nOne daily soft chew.\nNo sprays.\nNo 10 different supplements.\n\nLearn more below 👇",
-  "headline": "Your dog can't tell you. These 3 signs can.",
-  "description": "One daily chew for skin and immune support",
-  "cta": "Learn More",
-  "destination_url": "https://thepetlabco.com/products/tailored-probiotic-allergy-immune",
-  "aspect_ratio": "4:5",
-  "media": "/ads/petlab-xray-dog-video-01.webp",
-  "sort_order": 105,
-  "featured": true,
-  "poster_url": "/ads/petlab-xray-dog-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e61545faabbfced0972b"
- },
- {
   "slug": "liquid-death-grandma-text-01",
   "brand_name": "Liquid Death",
   "brand_domain": "liquiddeath.com",

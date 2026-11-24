@@ -583,11 +583,18 @@ html { background: var(--navy-900); }
 /* match cards stacked on every width: NOT-a-match first, then the match card + button */
 .fit-grid { grid-template-columns: 1fr; max-width: 760px; margin-left: auto; margin-right: auto; }
 
-/* ---------- Homepage: statics rows first, carousel under them (2026-11-24) ---------- */
-.statics-first { padding: clamp(3rem, 6vw, 4.5rem) 0 0; }
-.statics-first h2 { text-align: center; font-size: clamp(2rem, 4.6vw, 3.25rem); margin: 0 0 12px; }
-.reel.reel-after { padding: 4px 0 clamp(3rem, 6vw, 4.5rem); }
-.reel.reel-after .reel-stage { margin-top: 0; }
+/* ---------- Homepage carousel with the video ads (9:16), above the statics rows (2026-11-24) ---------- */
+.reel-track.videos { padding-left: calc(50% - 125px); padding-right: calc(50% - 125px); }
+.reel-card.is-video { width: 250px; aspect-ratio: 9/16; position: relative; }
+.reel-card.is-video.is-center { cursor: pointer; }
+.reel-card.is-video.playing { cursor: default; background: #000; }
+.reel-card iframe { display: block; width: 100%; height: 100%; border: 0; background: #000; }
+.reel-card .play-badge { transition: opacity .2s; }
+.reel-card.is-video:not(.is-center) .play-badge { opacity: 0; }
+@media (max-width: 640px) {
+  .reel-track.videos { padding-left: calc(50% - 29vw); padding-right: calc(50% - 29vw); }
+  .reel-card.is-video { width: 58vw; }
+}
 
 /* ---------- Portfolio: video plays inline in the card (2026-11-24) ---------- */
 .play-inline { display: block; width: 100%; border: 0; padding: 0; margin: 0; cursor: pointer; font: inherit; color: inherit; }

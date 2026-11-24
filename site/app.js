@@ -13,7 +13,7 @@
   const color = n => AVATAR[brands.indexOf(n) % AVATAR.length];
   // Design phase: logos from each brand's own site. In the build this is portfolio_ads.brand_logo_url.
   const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png',
-    'PetLab Co.': '/logos/petlab.png', 'Liquid Death': '/logos/liquid-death.png', 'MUD\\WTR': '/logos/mudwtr.png', 'Mars Men': '/logos/mars-men.png', 'The Oodie': '/logos/the-oodie.png',
+    'Liquid Death': '/logos/liquid-death.png', 'MUD\\WTR': '/logos/mudwtr.png', 'Mars Men': '/logos/mars-men.png', 'The Oodie': '/logos/the-oodie.png',
     'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'True Classic': '/logos/true-classic.png', 'Scandi Gum': '/logos/scandi-gum.png',
     'Smooche': '/logos/smooche.png', 'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
     'The Odorless Cat': '/logos/the-odorless-cat.png', 'Resilia': '/logos/resilia.png', 'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Norse Organics': '/logos/norse-organics.png',
@@ -59,10 +59,13 @@
   function playInline(m) {
     if (m.classList.contains('playing')) return;
     stopInline();
-    const a = ADS.find(x => x.slug === m.closest('.ad-card').dataset.slug);
-    m.classList.add('playing');
-    m.innerHTML = `<iframe src="${esc(inlineURL(a.video_embed))}" title="${esc(a.brand_name)} video ad" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>`;
-    const fr = m.querySelector('iframe');
+    mountGumlet(m, ADS.find(x => x.slug === m.closest('.ad-card').dataset.slug));
+  }
+  // puts the Gumlet player into el (portfolio card media or homepage carousel card) and turns the sound on
+  function mountGumlet(el, a) {
+    el.classList.add('playing');
+    el.innerHTML = `<iframe src="${esc(inlineURL(a.video_embed))}" title="${esc(a.brand_name)} video ad" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>`;
+    const fr = el.querySelector('iframe');
     // Gumlet always autoplays muted: once playback has started, turn the sound on (player.js API; the click allows it).
     // Unmuting right at "ready" is too early (autoplay mutes again), so it waits for "play" and retries a few times.
     const send = (method, value) => fr.contentWindow && fr.contentWindow.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value }), '*');
@@ -212,16 +215,23 @@
   }
 
   // ---------- Homepage reel (Atria-style carousel) ----------
-  // Video ads go here once they exist; until then the 4:5 statics fill it.
+  // The video ads fill it (9:16 cards); the center card plays its video in place. With fewer than 5 videos the 4:5 statics fill it.
   const reel = document.getElementById('reel');
   if (reel) {
-    const vids = ADS.filter(a => a.format === 'video' && a.in_reel); // a video joins the reel with in_reel: true
-    const list = (vids.length >= 5 ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
+    const vids = ADS.filter(a => a.format === 'video' && a.video_embed);
+    const isVid = vids.length >= 5;
+    const list = (isVid ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
     const track = reel.querySelector('.reel-track');
+    if (isVid) track.classList.add('videos');
+    const poster = a => `<img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy">${isVid ? PLAY : ''}`;
     // endless loop: the list sits in the track three times; when you scroll far into an outer copy,
     // the track jumps back by exactly one copy, which looks the same, so you can scroll forever either way
-    const one = copy => list.map(a => `<button class="reel-card" data-slug="${esc(a.slug)}"${copy === 1 ? '' : ' tabindex="-1" aria-hidden="true"'} aria-label="${esc(a.brand_name)}: ${esc(a.headline)}">
-      <img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy"></button>`).join('');
+    // (video cards are divs, not buttons, because the player iframe goes inside them)
+    const tag = isVid ? 'div' : 'button';
+    const one = copy => list.map(a => `<${tag} class="reel-card${isVid ? ' is-video' : ''}" data-slug="${esc(a.slug)}"${isVid ? ' role="button"' : ''}${copy === 1 ? (isVid ? ' tabindex="0"' : '') : ' tabindex="-1" aria-hidden="true"'} aria-label="${esc(a.brand_name)}: ${esc(a.headline)}${isVid ? '. Play video' : ''}">
+      ${poster(a)}</${tag}>`).join('');
+    // a playing card that leaves the center goes back to its poster
+    const stopCard = c => { const a = ADS.find(x => x.slug === c.dataset.slug); c.classList.remove('playing'); c.innerHTML = poster(a); };
     track.innerHTML = one(0) + one(1) + one(2);
     const cards = [...track.children], n = list.length;
     const setW = () => cards[n].offsetLeft - cards[0].offsetLeft;
@@ -248,6 +258,7 @@
         c.style.zIndex = String(10 - Math.min(9, Math.round(a * 2)));
         c.style.opacity = '1';
         c.classList.toggle('is-center', Math.abs(d) < 0.5);
+        if (Math.abs(d) >= 0.5 && c.classList.contains('playing')) stopCard(c);
       });
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
@@ -299,9 +310,22 @@
     };
     addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
     track.addEventListener('dragstart', e => e.preventDefault());
+    // a video card in the center plays in place (sound on); one at a time
+    const play = c => {
+      if (!c.classList.contains('is-video') || c.classList.contains('playing')) return;
+      cards.forEach(x => x !== c && x.classList.contains('playing') && stopCard(x));
+      mountGumlet(c, ADS.find(x => x.slug === c.dataset.slug));
+    };
     track.addEventListener('click', e => {
       if (moved) { moved = false; return; } // a drag is not a click
-      const c = e.target.closest('.reel-card'); if (c && !c.classList.contains('is-center')) centerOn(c);
+      const c = e.target.closest('.reel-card'); if (!c) return;
+      if (!c.classList.contains('is-center')) centerOn(c); else play(c);
+    });
+    track.addEventListener('keydown', e => {
+      const c = e.target.closest && e.target.closest('.reel-card.is-video');
+      if (!c || (e.key !== 'Enter' && e.key !== ' ')) return;
+      e.preventDefault();
+      if (!c.classList.contains('is-center')) centerOn(c); else play(c);
     });
   }
 
