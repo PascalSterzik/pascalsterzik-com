@@ -13,6 +13,9 @@
   const color = n => AVATAR[brands.indexOf(n) % AVATAR.length];
   // Design phase: logos from each brand's own site. In the build this is portfolio_ads.brand_logo_url.
   const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png' };
+  // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
+  const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
+  const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
   const avatar = a => {
     const src = a.brand_logo_url || LOGOS[a.brand_name];
     return src ? `<img class="avatar" src="${esc(src)}" alt="${esc(a.brand_name)} logo">`
@@ -25,7 +28,7 @@
       <div class="post-head">${avatar(a)}
         <span><span class="post-brand">${esc(a.brand_name)}</span><br><span class="post-sponsored">Sponsored</span></span></div>
       <p class="post-text">${esc(first)}</p>
-      <div class="post-media" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"><img src="${esc(a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="${i < 8 ? 'eager' : 'lazy'}"></div>
+      <div class="post-media" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"><img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="${i < 8 ? 'eager' : 'lazy'}">${a.video_embed ? PLAY : ''}</div>
       <div class="post-foot"><div class="meta"><div class="post-domain">${esc(a.brand_domain)}</div><div class="post-headline">${esc(a.headline)}</div></div><span class="post-cta">${esc(a.cta)}</span></div>
     </button>`;
   }
@@ -70,6 +73,7 @@
   }
   function closeAd() {
     modal.hidden = true;
+    modal.querySelectorAll('.post iframe').forEach(f => f.remove()); // stop a playing video
     document.body.classList.remove('locked');
     history.replaceState(null, '', location.pathname + location.search);
     if (lastFocus) lastFocus.focus();
@@ -81,7 +85,9 @@
       <div class="post-head">${avatar(a)}
         <span><span class="post-brand">${esc(a.brand_name)}</span><br><span class="post-sponsored">Sponsored</span></span></div>
       <div class="post-copy"><p class="post-text clamp" id="pt">${esc(a.primary_text)}</p><button class="more" data-more hidden aria-controls="pt" aria-expanded="false">Show more</button></div>
-      <div class="post-media" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}"><img src="${esc(a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}"></div>
+      <div class="post-media" style="aspect-ratio:${String(a.aspect_ratio).replace(':', '/')}">${a.video_embed
+        ? `<iframe src="${esc(embedURL(a.video_embed))}" title="${esc(a.brand_name)} video ad" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>`
+        : `<img src="${esc(a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}">`}</div>
       <div class="post-foot"><div class="meta"><div class="post-domain">${esc(a.brand_domain)}</div><div class="post-headline" style="white-space:normal">${esc(a.headline)}</div><div class="post-sponsored">${esc(a.description)}</div></div><span class="post-cta">${esc(a.cta)}</span></div>`;
     modal.querySelector('.details-body').innerHTML = `
       <h2 id="ad-title">${esc(a.brand_name)}</h2>
@@ -94,6 +100,11 @@
         <dt>Size</dt><dd>${esc(a.aspect_ratio)}</dd>
       </dl>`;
     modal.querySelector('.pos').textContent = `${modalIdx + 1} / ${modalList.length}`;
+    // the Gumlet player takes focus when it loads, which would swallow Escape and the arrow keys: hand focus back
+    const fr = modal.querySelector('.post iframe');
+    if (fr) fr.addEventListener('load', () => [300, 1200].forEach(t => setTimeout(() => {
+      if (document.activeElement === fr) modal.querySelector('[data-close]').focus({ preventScroll: true });
+    }, t)));
     const pt = modal.querySelector('#pt'), more = modal.querySelector('[data-more]');
     more.hidden = true;
     requestAnimationFrame(() => { more.hidden = pt.scrollHeight <= pt.clientHeight + 1; }); // measure once visible
@@ -152,7 +163,7 @@
   // Video ads go here once they exist; until then the 4:5 statics fill it.
   const reel = document.getElementById('reel');
   if (reel) {
-    const vids = ADS.filter(a => a.format === 'video');
+    const vids = ADS.filter(a => a.format === 'video' && a.in_reel); // a video joins the reel with in_reel: true
     const list = (vids.length >= 5 ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
     const track = reel.querySelector('.reel-track');
     // endless loop: the list sits in the track three times; when you scroll far into an outer copy,
@@ -246,7 +257,7 @@
   const rows = document.querySelectorAll('.marquee[data-row]');
   if (rows.length) {
     const used = new Set(reel ? [...reel.querySelectorAll('.reel-card')].map(c => c.dataset.slug) : []);
-    const pool = ADS.filter(a => !used.has(a.slug));
+    const pool = ADS.filter(a => !used.has(a.slug) && a.format !== 'video');
     const half = Math.ceil(pool.length / 2);
     rows.forEach((row, k) => {
       const items = k === 0 ? pool.slice(0, half) : pool.slice(half);
@@ -322,6 +333,7 @@
         && (state.lang === 'all' || a.language === state.lang)
         && Object.entries(state.f).every(([k, s]) => !s.size || s.has(a[k]))
         && (!state.q || [a.brand_name, a.product, a.niche, a.ad_type, a.headline, a.primary_text].join(' ').toLowerCase().includes(state.q)));
+      if (state.sort === 'featured') list = list.slice().sort((x, y) => (y.featured ? 1 : 0) - (x.featured ? 1 : 0)); // stable: new ads first, the rest in file order
       if (state.sort === 'brand') list = list.slice().sort((x, y) => x.brand_name.localeCompare(y.brand_name) || x.sort_order - y.sort_order);
       if (state.sort === 'newest') list = list.slice().sort((x, y) => y.sort_order - x.sort_order);
       return list;
