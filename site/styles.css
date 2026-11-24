@@ -574,4 +574,7 @@ html { background: var(--navy-900); }
 .fit-col { display: flex; flex-direction: column; gap: 1.25rem; }
 .fit-col .fit { flex: 1; }
 .fit-btn { align-self: center; margin-top: .25rem; }
-.signature { margin-top: 1.4rem; font: 400 3.2rem/1 'Mrs Saint Delafield', cursive; color: var(--ink); }
+.signature { margin-top: 1.2rem; font: 400 3rem/1.1 'Great Vibes', cursive; color: var(--ink); }
+
+/* match cards stacked on every width: NOT-a-match first, then the match card + button */
+.fit-grid { grid-template-columns: 1fr; max-width: 760px; margin-left: auto; margin-right: auto; }
