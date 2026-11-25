@@ -17,7 +17,12 @@
     'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'Scandi Gum': '/logos/scandi-gum.png',
     'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
     'The Odorless Cat': '/logos/the-odorless-cat.png', 'Resilia': '/logos/resilia.png', 'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Norse Organics': '/logos/norse-organics.png',
-    'Nero': '/logos/nero.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Primal Viking': '/logos/primal-viking.png' };
+    'Nero': '/logos/nero.png',
+    'Purely Nutrient': '/logos/purely-nutrient.png', 'Mirelia': '/logos/mirelia.png', 'Deutsches Gesundheits Journal': '/logos/dgj.png', 'Tasty Dose': '/logos/tasty-dose.png',
+    'Ryer': '/logos/ryer.png', 'Vusilia': '/logos/vusilia.png', 'Mammaly': '/logos/mammaly.png',
+    'Fairment': '/logos/fairment.png', 'Dr. Müller': '/logos/dr-mueller.png', 'Veluna': '/logos/veluna.png', 'HOLY': '/logos/holy.png', 'TryMoin': '/logos/trymoin.png',
+    'TryJello': '/logos/tryjello.png', 'Snocks': '/logos/snocks.png', 'The Better Cat': '/logos/the-better-cat.png', 'Kapten & Son': '/logos/kapten-son.png',
+    'SHEKO': '/logos/sheko.png', "Men's Best Basics": '/logos/mens-best.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Primal Viking': '/logos/primal-viking.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
   const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
   const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
@@ -218,9 +223,11 @@
   // The video ads fill it (9:16 cards); the center card plays its video in place. With fewer than 5 videos the 4:5 statics fill it.
   const reel = document.getElementById('reel');
   if (reel) {
-    const vids = ADS.filter(a => a.format === 'video' && a.video_embed);
+    // all videos; English ones first (the site is in English), otherwise file order
+    const vids = ADS.filter(a => a.format === 'video' && a.video_embed).map((a, i) => [a, i])
+      .sort((x, y) => (x[0].language === 'en' ? 0 : 1) - (y[0].language === 'en' ? 0 : 1) || x[1] - y[1]).map(x => x[0]);
     const isVid = vids.length >= 5;
-    const list = (isVid ? vids : ADS.filter(a => a.aspect_ratio === '4:5')).slice(0, 14);
+    const list = isVid ? vids : ADS.filter(a => a.aspect_ratio === '4:5').slice(0, 14);
     const track = reel.querySelector('.reel-track');
     if (isVid) track.classList.add('videos');
     const poster = a => `<img src="${esc(a.poster_url || a.media)}" alt="${esc(a.brand_name)} ad: ${esc(a.ad_type)}" loading="lazy">${isVid ? PLAY : ''}`;
