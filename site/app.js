@@ -19,7 +19,7 @@
     'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Nero': '/logos/nero.png', 'Purely Nutrient': '/logos/purely-nutrient.png', 'Mirelia': '/logos/mirelia.png',
     'Deutsches Gesundheits Journal': '/logos/dgj.png', 'Tasty Dose': '/logos/tasty-dose.png', 'Ryer': '/logos/ryer.png', 'Vusilia': '/logos/vusilia.png', 'Fairment': '/logos/fairment.png',
     'Dr. Müller': '/logos/dr-mueller.png', 'Veluna': '/logos/veluna.png', 'TryMoin': '/logos/trymoin.png', 'TryJello': '/logos/tryjello.png', 'The Better Cat': '/logos/the-better-cat.png',
-    "Men's Best Basics": '/logos/mens-best.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Kuro': '/logos/kuro-heart.png', 'Ilyra': '/logos/ilyra.png' };
+    "Men's Best Basics": '/logos/mens-best.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Kuro': '/logos/kuro-heart.png', 'Ketorvex': '/logos/ketorvex.png', 'Elvetta': '/logos/elvetta.png', 'Ilyra': '/logos/ilyra.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
   const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
   const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
