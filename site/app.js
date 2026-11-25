@@ -144,8 +144,7 @@
       <p class="product">${esc(a.product)}</p>
       <dl class="facts">
         <dt>Niche</dt><dd>${esc(a.niche)}</dd>
-        <dt>Ad type</dt><dd>${esc(cap(a.ad_type))}</dd>
-        <dt>Format</dt><dd>${esc(FORMATS[a.format] || a.format)}</dd>
+        <dt>Format</dt><dd>${esc(cap(a.ad_type))}</dd>
         <dt>Awareness stage</dt><dd>${esc(STAGES[a.awareness_stage] || a.awareness_stage)}</dd>
         <dt>Size</dt><dd>${esc(a.aspect_ratio)}</dd>
       </dl>`;
@@ -270,15 +269,33 @@
     // snapping is done here, not with CSS scroll-snap: Chrome re-snaps to the card it remembered and would undo the loop jump
     let idle = 0, touching = false;
     const nearest = () => { const m = track.scrollLeft + track.clientWidth / 2; return cards.reduce((b, c) => Math.abs(c.offsetLeft + c.offsetWidth / 2 - m) < Math.abs(b.offsetLeft + b.offsetWidth / 2 - m) ? c : b, cards[0]); };
+    let aim = null; // the card a tap/click is sliding to; settle() keeps going there instead of snapping back
     const settle = () => {
       if (drag || touching) return;
+      if (aim) { const t = aim.offsetLeft - (track.clientWidth - aim.clientWidth) / 2; if (Math.abs(track.scrollLeft - t) > 1) return; aim = null; }
       wrap();
       const c = nearest(), target = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2;
       if (Math.abs(track.scrollLeft - target) > 1) track.scrollTo({ left: target, behavior: 'smooth' });
       paint();
     };
-    track.addEventListener('touchstart', () => { touching = true; }, { passive: true });
-    track.addEventListener('touchend', () => { touching = false; clearTimeout(idle); idle = setTimeout(settle, 200); }, { passive: true });
+    // touch: a real finger moves a little during a tap. Past ~15 px the browser treats it as a tiny swipe and sends no
+    // click, so the carousel used to snap back to the old card. A short touch that barely moves counts as a tap here.
+    let tap = null, tapAt = 0;
+    track.addEventListener('touchstart', e => {
+      touching = true; aim = null;
+      const t = e.touches[0]; tap = e.touches.length === 1 ? { x: t.clientX, y: t.clientY, dx: 0, dy: 0, at: Date.now(), card: e.target.closest('.reel-card') } : null;
+    }, { passive: true });
+    track.addEventListener('touchmove', e => { if (tap) { const t = e.touches[0]; tap.dx = t.clientX - tap.x; tap.dy = t.clientY - tap.y; } }, { passive: true });
+    track.addEventListener('touchend', () => {
+      touching = false; clearTimeout(idle);
+      const t = tap; tap = null;
+      if (t && t.card && Math.hypot(t.dx, t.dy) < 30 && Date.now() - t.at < 500 && !t.card.querySelector('iframe')) {
+        tapAt = Date.now();
+        if (!t.card.classList.contains('is-center')) centerOn(t.card); else play(t.card);
+        return;
+      }
+      idle = setTimeout(settle, 200);
+    }, { passive: true });
     track.addEventListener('scroll', () => {
       queue();
       if (!('onscrollend' in window)) { clearTimeout(idle); idle = setTimeout(settle, 160); }
@@ -288,12 +305,12 @@
     // start in the middle copy so cards show on both sides
     requestAnimationFrame(() => { const c = cards[n + Math.floor(n / 2)]; track.scrollLeft = c.offsetLeft - (track.clientWidth - c.clientWidth) / 2; paint(); });
     // a side card slides to the center; the center card does nothing
-    const centerOn = c => track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' });
+    const centerOn = c => { aim = c; setTimeout(() => { if (aim === c) aim = null; }, 1500); track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' }); };
     // mouse drag on desktop: grab and swipe left or right, then snap to the nearest card
     let drag = null, moved = false;
     track.addEventListener('pointerdown', e => {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      drag = { x: e.clientX, left: track.scrollLeft, id: e.pointerId }; moved = false;
+      drag = { x: e.clientX, left: track.scrollLeft, id: e.pointerId }; moved = false; aim = null;
       track.classList.add('dragging');
     });
     addEventListener('pointermove', e => {
@@ -322,6 +339,7 @@
     };
     track.addEventListener('click', e => {
       if (moved) { moved = false; return; } // a drag is not a click
+      if (Date.now() - tapAt < 700) return; // the touch handler already took this tap
       const c = e.target.closest('.reel-card'); if (!c) return;
       if (!c.classList.contains('is-center')) centerOn(c); else play(c);
     });
@@ -353,8 +371,7 @@
     const state = { tab: 'all', lang: 'all', q: '', rand: null, f: { niche: new Set(), ad_type: new Set(), format: new Set(), awareness_stage: new Set(), brand_name: new Set(), language: new Set() } };
     const FILTERS = [
       ['niche', 'Niche', v => v],
-      ['ad_type', 'Ad type', v => cap(v)],
-      ['format', 'Format', v => FORMATS[v] || v],
+      ['ad_type', 'Format', v => cap(v)],
       ['awareness_stage', 'Awareness stage', v => STAGES[v] || v],
       ['brand_name', 'Brand', v => v],
       ['language', 'Language', v => LANGS[v] || v],
@@ -363,7 +380,7 @@
     const tabsEl = document.getElementById('tabs');
     const tabDefs = [['all', 'All', ADS.length], ['image', 'Statics'], ['video', 'Videos'], ['carousel', 'Carousels']]
       .map(([k, l, n]) => [k, l, n ?? ADS.filter(a => a.format === k).length]).filter(([k, , n]) => k === 'all' || n > 0);
-    tabsEl.innerHTML = tabDefs.map(([k, l, n]) => `<button class="tab" role="tab" data-tab="${k}" aria-selected="${k === 'all'}">${l}<span class="count">${n}</span></button>`).join('');
+    tabsEl.innerHTML = tabDefs.map(([k, l]) => `<button class="tab" role="tab" data-tab="${k}" aria-selected="${k === 'all'}">${l}</button>`).join('');
     tabsEl.addEventListener('click', e => { const t = e.target.closest('.tab'); if (!t) return; state.tab = t.dataset.tab; tabsEl.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t)); render(); });
 
     // Filter chips: only filters with 2+ values
@@ -371,9 +388,10 @@
     const chevron = '<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>';
     // Language has its own switch (All languages / English / German), always shown
     const langEl = document.getElementById('langs');
-    const langDefs = [['all', 'All<span class="wide"> languages</span>', ADS.length], ['en', 'English'], ['de', 'German']]
+    // phones show EN / DE so both toggles fit side by side
+    const langDefs = [['all', 'All<span class="wide"> languages</span>', ADS.length], ['en', '<span class="full">English</span><span class="short">EN</span>'], ['de', '<span class="full">German</span><span class="short">DE</span>']]
       .map(([k, l, n]) => [k, l, n ?? ADS.filter(a => a.language === k).length]);
-    langEl.innerHTML = langDefs.map(([k, l, n]) => `<button class="tab" role="tab" data-lang="${k}" aria-selected="${k === 'all'}"${n ? '' : ' disabled'}>${l}<span class="count">${n}</span></button>`).join('');
+    langEl.innerHTML = langDefs.map(([k, l, n]) => `<button class="tab" role="tab" data-lang="${k}" aria-selected="${k === 'all'}"${n ? '' : ' disabled'}>${l}</button>`).join('');
     langEl.addEventListener('click', e => { const t = e.target.closest('.tab'); if (!t || t.disabled) return; state.lang = t.dataset.lang; langEl.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t)); render(); });
 
     const active = FILTERS.filter(([k]) => k !== 'language' && new Set(ADS.map(a => a[k])).size > 1);
@@ -382,12 +400,13 @@
       vals.sort(k === 'awareness_stage' ? (x, y) => STAGE_ORDER.indexOf(x) - STAGE_ORDER.indexOf(y) : (x, y) => fmt(x).localeCompare(fmt(y)));
       return `<div class="chip-wrap"><button class="chip" data-chip="${k}" aria-expanded="false" aria-haspopup="true">${label}<span class="n" hidden></span>${chevron}</button>
         <div class="pop" hidden data-pop="${k}">${vals.map(v => `<label><input type="checkbox" value="${esc(v)}" data-f="${k}">${esc(fmt(v))}<span class="c">${ADS.filter(a => a[k] === v).length}</span></label>`).join('')}</div></div>`;
-    }).join('') + `<button class="clear" id="clear-all" hidden>Clear all</button><span class="result-count" id="count"></span>`;
+    }).join('') + `<button class="clear" id="clear-all" hidden>Clear all</button>`;
     chipsEl.addEventListener('click', e => {
       const chip = e.target.closest('.chip');
       if (chip) {
         const pop = chip.nextElementSibling, open = pop.hidden;
         closePops(); pop.hidden = !open; chip.setAttribute('aria-expanded', open);
+        if (open) placePop(chip, pop);
         e.stopPropagation();
       }
       if (e.target.id === 'clear-all') clearAll();
@@ -397,6 +416,18 @@
       i.checked ? state.f[i.dataset.f].add(i.value) : state.f[i.dataset.f].delete(i.value);
       render();
     });
+    // the list opens under its button but never past the screen edges (fixed position, so the chip row can scroll sideways)
+    function placePop(chip, pop) {
+      const r = chip.getBoundingClientRect(), vw = document.documentElement.clientWidth, w = Math.min(pop.offsetWidth, vw - 16);
+      pop.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px';
+      pop.style.top = (r.bottom + 8) + 'px';
+      pop.style.maxHeight = Math.max(160, Math.min(380, innerHeight - r.bottom - 20)) + 'px';
+    }
+    // keep an open list under its button while the page or the chip row scrolls (phones fire scroll when the browser bar moves)
+    const follow = () => { const pop = chipsEl.querySelector('.pop:not([hidden])'); if (pop) placePop(pop.previousElementSibling, pop); };
+    addEventListener('scroll', follow, { passive: true });
+    addEventListener('resize', follow);
+    chipsEl.addEventListener('scroll', follow, { passive: true });
     function closePops() { chipsEl.querySelectorAll('.pop').forEach(p => p.hidden = true); chipsEl.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-expanded', 'false')); }
     document.addEventListener('click', e => { if (!e.target.closest('.chip-wrap')) closePops(); });
     addEventListener('keydown', e => { if (e.key === 'Escape') closePops(); });
@@ -428,7 +459,6 @@
       const nFilters = Object.values(state.f).reduce((n, s) => n + s.size, 0);
       chipsEl.querySelectorAll('.chip').forEach(c => { const n = state.f[c.dataset.chip].size; const b = c.querySelector('.n'); b.hidden = !n; b.textContent = n; c.classList.toggle('active', !!n); });
       document.getElementById('clear-all').hidden = !(nFilters || state.q || state.lang !== 'all');
-      document.getElementById('count').textContent = `${list.length} ${list.length === 1 ? 'ad' : 'ads'}`;
       empty.hidden = list.length > 0;
       draw();
     }
