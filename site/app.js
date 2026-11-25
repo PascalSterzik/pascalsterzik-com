@@ -502,7 +502,7 @@
         && Object.entries(state.f).every(([k, s]) => !s.size || s.has(a[k]))
         && (!state.q || [a.brand_name, a.product, a.niche, a.ad_type, a.headline, a.primary_text].join(' ').toLowerCase().includes(state.q)));
       if (state.rand) list = list.slice().sort((x, y) => state.rand.get(x.slug) - state.rand.get(y.slug));
-      else list = list.slice().sort((x, y) => (y.featured ? 1 : 0) - (x.featured ? 1 : 0)); // stable: new ads first, the rest in file order
+      else list = list.slice().sort((x, y) => (x.rank ?? 9999) - (y.rank ?? 9999)); // best ads first (rank set from the quality scores), solid ones at the end
       return list;
     }
     const empty = document.getElementById('empty');

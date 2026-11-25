@@ -17,7 +17,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/ketorvex-old-jeans-de-01.webp",
   "sort_order": 129,
-  "featured": true
+  "featured": true,
+  "rank": 67
  },
  {
   "slug": "ketorvex-christmas-photos-de-01",
@@ -37,7 +38,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/ketorvex-christmas-photos-de-01.webp",
   "sort_order": 130,
-  "featured": true
+  "featured": true,
+  "rank": 68
  },
  {
   "slug": "ketorvex-push-capsule-de-01",
@@ -57,7 +59,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/ketorvex-push-capsule-de-01.webp",
   "sort_order": 131,
-  "featured": true
+  "featured": true,
+  "rank": 17
  },
  {
   "slug": "ketorvex-favorite-jeans-de-01",
@@ -77,7 +80,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/ketorvex-favorite-jeans-de-01.webp",
   "sort_order": 132,
-  "featured": true
+  "featured": true,
+  "rank": 40
  },
  {
   "slug": "elvetta-video-you-cant-de-01",
@@ -97,7 +101,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-video-you-cant-de-01.webp",
   "sort_order": 133,
-  "featured": true
+  "featured": true,
+  "rank": 106
  },
  {
   "slug": "elvetta-newspaper-fastest-way-de-01",
@@ -117,7 +122,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-newspaper-fastest-way-de-01.webp",
   "sort_order": 134,
-  "featured": true
+  "featured": true,
+  "rank": 18
  },
  {
   "slug": "elvetta-reply-3-foods-de-01",
@@ -137,7 +143,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-reply-3-foods-de-01.webp",
   "sort_order": 135,
-  "featured": true
+  "featured": true,
+  "rank": 10
  },
  {
   "slug": "elvetta-tv-morning-tip-de-01",
@@ -157,7 +164,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-tv-morning-tip-de-01.webp",
   "sort_order": 136,
-  "featured": true
+  "featured": true,
+  "rank": 107
  },
  {
   "slug": "elvetta-fact-check-de-01",
@@ -177,7 +185,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-fact-check-de-01.webp",
   "sort_order": 137,
-  "featured": true
+  "featured": true,
+  "rank": 19
  },
  {
   "slug": "elvetta-magazine-ate-healthy-de-01",
@@ -197,7 +206,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-magazine-ate-healthy-de-01.webp",
   "sort_order": 138,
-  "featured": true
+  "featured": true,
+  "rank": 41
  },
  {
   "slug": "elvetta-sorry-card-de-01",
@@ -217,7 +227,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/elvetta-sorry-card-de-01.webp",
   "sort_order": 139,
-  "featured": true
+  "featured": true,
+  "rank": 60
  },
  {
   "slug": "purely-nutrient-tinder-date-video-01",
@@ -239,7 +250,8 @@ window.ADS = [
   "sort_order": 103,
   "featured": true,
   "poster_url": "/ads/purely-nutrient-tinder-date-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d23c75a7f4fa5ab65320"
+  "video_embed": "https://play.gumlet.io/embed/6b06d23c75a7f4fa5ab65320",
+  "rank": 109
  },
  {
   "slug": "kuro-two-men-ramipril-video-01",
@@ -261,7 +273,8 @@ window.ADS = [
   "sort_order": 104,
   "featured": true,
   "poster_url": "/ads/kuro-two-men-ramipril-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d4f775a7f4fa5ab65ffb"
+  "video_embed": "https://play.gumlet.io/embed/6b06d4f775a7f4fa5ab65ffb",
+  "rank": 16
  },
  {
   "slug": "mirelia-ex-millionaire-video-01",
@@ -283,7 +296,8 @@ window.ADS = [
   "sort_order": 105,
   "featured": true,
   "poster_url": "/ads/mirelia-ex-millionaire-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d5f6385492d4017092ff"
+  "video_embed": "https://play.gumlet.io/embed/6b06d5f6385492d4017092ff",
+  "rank": 30
  },
  {
   "slug": "dgj-sent-by-mistake-video-01",
@@ -305,7 +319,8 @@ window.ADS = [
   "sort_order": 106,
   "featured": true,
   "poster_url": "/ads/dgj-sent-by-mistake-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d6e975a7f4fa5ab668bd"
+  "video_embed": "https://play.gumlet.io/embed/6b06d6e975a7f4fa5ab668bd",
+  "rank": 8
  },
  {
   "slug": "mirelia-guy-on-vacation-video-01",
@@ -327,7 +342,8 @@ window.ADS = [
   "sort_order": 107,
   "featured": true,
   "poster_url": "/ads/mirelia-guy-on-vacation-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d7e1385492d401709b94"
+  "video_embed": "https://play.gumlet.io/embed/6b06d7e1385492d401709b94",
+  "rank": 38
  },
  {
   "slug": "tasty-dose-last-box-video-01",
@@ -349,7 +365,8 @@ window.ADS = [
   "sort_order": 108,
   "featured": true,
   "poster_url": "/ads/tasty-dose-last-box-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d8a9385492d401709fd2"
+  "video_embed": "https://play.gumlet.io/embed/6b06d8a9385492d401709fd2",
+  "rank": 43
  },
  {
   "slug": "ryer-clean-interior-video-01",
@@ -371,7 +388,8 @@ window.ADS = [
   "sort_order": 109,
   "featured": true,
   "poster_url": "/ads/ryer-clean-interior-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d9ab385492d40170a51a"
+  "video_embed": "https://play.gumlet.io/embed/6b06d9ab385492d40170a51a",
+  "rank": 102
  },
  {
   "slug": "vusilia-knovita-alarm-clock-video-01",
@@ -393,7 +411,8 @@ window.ADS = [
   "sort_order": 110,
   "featured": true,
   "poster_url": "/ads/vusilia-knovita-alarm-clock-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06da01385492d40170a6aa"
+  "video_embed": "https://play.gumlet.io/embed/6b06da01385492d40170a6aa",
+  "rank": 103
  },
  {
   "slug": "mirelia-millionaire-family-toilets-video-01",
@@ -415,7 +434,8 @@ window.ADS = [
   "sort_order": 112,
   "featured": true,
   "poster_url": "/ads/mirelia-millionaire-family-toilets-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d2a4385492d401708334"
+  "video_embed": "https://play.gumlet.io/embed/6b06d2a4385492d401708334",
+  "rank": 48
  },
  {
   "slug": "mirelia-kerstin-not-fat-video-01",
@@ -437,7 +457,8 @@ window.ADS = [
   "sort_order": 113,
   "featured": true,
   "poster_url": "/ads/mirelia-kerstin-not-fat-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d38875a7f4fa5ab659c5"
+  "video_embed": "https://play.gumlet.io/embed/6b06d38875a7f4fa5ab659c5",
+  "rank": 22
  },
  {
   "slug": "mirelia-empty-glass-video-01",
@@ -459,7 +480,8 @@ window.ADS = [
   "sort_order": 114,
   "featured": true,
   "poster_url": "/ads/mirelia-empty-glass-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06d45b75a7f4fa5ab65db2"
+  "video_embed": "https://play.gumlet.io/embed/6b06d45b75a7f4fa5ab65db2",
+  "rank": 31
  },
  {
   "slug": "ryer-gti-dirty-interior-video-01",
@@ -481,7 +503,8 @@ window.ADS = [
   "sort_order": 115,
   "featured": true,
   "poster_url": "/ads/ryer-gti-dirty-interior-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06db96385492d40170ada1"
+  "video_embed": "https://play.gumlet.io/embed/6b06db96385492d40170ada1",
+  "rank": 9
  },
  {
   "slug": "ryer-mattress-dirty-water-video-01",
@@ -503,7 +526,8 @@ window.ADS = [
   "sort_order": 116,
   "featured": true,
   "poster_url": "/ads/ryer-mattress-dirty-water-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06dc5b75a7f4fa5ab680b7"
+  "video_embed": "https://play.gumlet.io/embed/6b06dc5b75a7f4fa5ab680b7",
+  "rank": 11
  },
  {
   "slug": "mens-best-shirt-clings-video-01",
@@ -525,7 +549,8 @@ window.ADS = [
   "sort_order": 118,
   "featured": true,
   "poster_url": "/ads/mens-best-shirt-clings-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b06db4075a7f4fa5ab67c0f"
+  "video_embed": "https://play.gumlet.io/embed/6b06db4075a7f4fa5ab67c0f",
+  "rank": 39
  },
  {
   "slug": "fairment-tried-everything-de-01",
@@ -545,7 +570,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/fairment-tried-everything-de-01.webp",
   "sort_order": 119,
-  "featured": true
+  "featured": true,
+  "rank": 104
  },
  {
   "slug": "dr-mueller-lumbar-xray-de-01",
@@ -565,7 +591,8 @@ window.ADS = [
   "aspect_ratio": "1:1",
   "media": "/ads/dr-mueller-lumbar-xray-de-01.webp",
   "sort_order": 120,
-  "featured": true
+  "featured": true,
+  "rank": 49
  },
  {
   "slug": "vusilia-limescale-pipe-de-01",
@@ -585,7 +612,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/vusilia-limescale-pipe-de-01.webp",
   "sort_order": 121,
-  "featured": true
+  "featured": true,
+  "rank": 23
  },
  {
   "slug": "veluna-tweezers-de-01",
@@ -605,7 +633,8 @@ window.ADS = [
   "aspect_ratio": "1:1",
   "media": "/ads/veluna-tweezers-de-01.webp",
   "sort_order": 123,
-  "featured": true
+  "featured": true,
+  "rank": 105
  },
  {
   "slug": "trymoin-no-queue-de-01",
@@ -625,7 +654,8 @@ window.ADS = [
   "aspect_ratio": "3:4",
   "media": "/ads/trymoin-no-queue-de-01.webp",
   "sort_order": 125,
-  "featured": true
+  "featured": true,
+  "rank": 66
  },
  {
   "slug": "tryjello-pants-too-loose-de-01",
@@ -645,7 +675,8 @@ window.ADS = [
   "aspect_ratio": "3:4",
   "media": "/ads/tryjello-pants-too-loose-de-01.webp",
   "sort_order": 126,
-  "featured": true
+  "featured": true,
+  "rank": 50
  },
  {
   "slug": "the-better-cat-two-bites-de-01",
@@ -665,7 +696,8 @@ window.ADS = [
   "aspect_ratio": "1:1",
   "media": "/ads/the-better-cat-two-bites-de-01.webp",
   "sort_order": 128,
-  "featured": true
+  "featured": true,
+  "rank": 98
  },
  {
   "slug": "kindred-bravely-apology-01",
@@ -684,7 +716,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-apology-01.webp",
-  "sort_order": 1
+  "sort_order": 1,
+  "rank": 51
  },
  {
   "slug": "legendairy-milk-01-number-one-brand-capsules-in-palm",
@@ -703,7 +736,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-01-number-one-brand-capsules-in-palm.webp",
-  "sort_order": 2
+  "sort_order": 2,
+  "rank": 85
  },
  {
   "slug": "smithey-forever-chemicals-01",
@@ -722,7 +756,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-10-cast-iron-chef-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-forever-chemicals-01.webp",
-  "sort_order": 3
+  "sort_order": 3,
+  "rank": 69
  },
  {
   "slug": "xero-shoes-feature-callouts-01",
@@ -741,7 +776,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-women",
   "aspect_ratio": "1:1",
   "media": "/ads/xero-shoes-feature-callouts-01.webp",
-  "sort_order": 4
+  "sort_order": 4,
+  "rank": 99
  },
  {
   "slug": "kindred-bravely-feature-callouts-01",
@@ -760,7 +796,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-feature-callouts-01.webp",
-  "sort_order": 6
+  "sort_order": 6,
+  "rank": 70
  },
  {
   "slug": "legendairy-milk-02-bestseller-bundle-three-bottles",
@@ -779,7 +816,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/bestseller-bundle",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-02-bestseller-bundle-three-bottles.webp",
-  "sort_order": 7
+  "sort_order": 7,
+  "rank": 86
  },
  {
   "slug": "smithey-us-vs-them-01",
@@ -798,7 +836,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "1:1",
   "media": "/ads/smithey-us-vs-them-01.webp",
-  "sort_order": 8
+  "sort_order": 8,
+  "rank": 79
  },
  {
   "slug": "xero-shoes-lifestyle-city-01",
@@ -817,7 +856,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-men",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-lifestyle-city-01.webp",
-  "sort_order": 9
+  "sort_order": 9,
+  "rank": 87
  },
  {
   "slug": "kindred-bravely-gift-review-01",
@@ -836,7 +876,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-gift-review-01.webp",
-  "sort_order": 11
+  "sort_order": 11,
+  "rank": 61
  },
  {
   "slug": "legendairy-milk-03-story-question-exclusive-pumping",
@@ -855,7 +896,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "9:16",
   "media": "/ads/legendairy-milk-03-story-question-exclusive-pumping.webp",
-  "sort_order": 12
+  "sort_order": 12,
+  "rank": 52
  },
  {
   "slug": "smithey-heirloom-note-01",
@@ -874,7 +916,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-heirloom-note-01.webp",
-  "sort_order": 13
+  "sort_order": 13,
+  "rank": 53
  },
  {
   "slug": "xero-shoes-training-01",
@@ -893,7 +936,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/xt-max",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-training-01.webp",
-  "sort_order": 14
+  "sort_order": 14,
+  "rank": 71
  },
  {
   "slug": "kindred-bravely-breaking-news-01",
@@ -912,7 +956,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/sublime-hands-free-pumping-nursing-bra-twilight",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-breaking-news-01.webp",
-  "sort_order": 16
+  "sort_order": 16,
+  "rank": 72
  },
  {
   "slug": "legendairy-milk-04-tiktok-selfie-oatmeal-every-morning",
@@ -931,7 +976,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "9:16",
   "media": "/ads/legendairy-milk-04-tiktok-selfie-oatmeal-every-morning.webp",
-  "sort_order": 17
+  "sort_order": 17,
+  "rank": 32
  },
  {
   "slug": "smithey-founders-set-01",
@@ -950,7 +996,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/collections/sets/products/the-founders-3-piece-set",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-founders-set-01.webp",
-  "sort_order": 18
+  "sort_order": 18,
+  "rank": 88
  },
  {
   "slug": "xero-shoes-flex-demo-01",
@@ -969,7 +1016,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-men",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-flex-demo-01.webp",
-  "sort_order": 19
+  "sort_order": 19,
+  "rank": 73
  },
  {
   "slug": "kindred-bravely-colorway-stack-01",
@@ -988,7 +1036,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-colorway-stack-01.webp",
-  "sort_order": 21
+  "sort_order": 21,
+  "rank": 80
  },
  {
   "slug": "legendairy-milk-05-x-post-bottle-guilt",
@@ -1007,7 +1056,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/collections/lactation-supplements",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-05-x-post-bottle-guilt.webp",
-  "sort_order": 22
+  "sort_order": 22,
+  "rank": 33
  },
  {
   "slug": "smithey-product-01",
@@ -1026,7 +1076,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-product-01.webp",
-  "sort_order": 23
+  "sort_order": 23,
+  "rank": 89
  },
  {
   "slug": "xero-shoes-us-vs-them-01",
@@ -1045,7 +1096,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-coast-women",
   "aspect_ratio": "1:1",
   "media": "/ads/xero-shoes-us-vs-them-01.webp",
-  "sort_order": 24
+  "sort_order": 24,
+  "rank": 81
  },
  {
   "slug": "kindred-bravely-labor-gown-01",
@@ -1064,7 +1116,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/ruffle-strap-labor-delivery-gown-sage",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-labor-gown-01.webp",
-  "sort_order": 26
+  "sort_order": 26,
+  "rank": 74
  },
  {
   "slug": "legendairy-milk-06-text-from-sister-at-2-am",
@@ -1083,7 +1136,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-06-text-from-sister-at-2-am.webp",
-  "sort_order": 27
+  "sort_order": 27,
+  "rank": 20
  },
  {
   "slug": "smithey-craft-01",
@@ -1102,7 +1156,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/pages/our-story",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-craft-01.webp",
-  "sort_order": 28
+  "sort_order": 28,
+  "rank": 82
  },
  {
   "slug": "xero-shoes-x-post-01",
@@ -1121,7 +1176,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-x-post-01.webp",
-  "sort_order": 29
+  "sort_order": 29,
+  "rank": 34
  },
  {
   "slug": "kindred-bravely-x-post-01",
@@ -1140,7 +1196,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/bamboo-wide-leg-maternity-postpartum-lounge-pant-fig",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-x-post-01.webp",
-  "sort_order": 31
+  "sort_order": 31,
+  "rank": 35
  },
  {
   "slug": "legendairy-milk-07-news-dairy-farm-herb-goats-rue",
@@ -1159,7 +1216,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-07-news-dairy-farm-herb-goats-rue.webp",
-  "sort_order": 32
+  "sort_order": 32,
+  "rank": 54
  },
  {
   "slug": "smithey-x-post-01",
@@ -1178,7 +1236,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-x-post-01.webp",
-  "sort_order": 33
+  "sort_order": 33,
+  "rank": 36
  },
  {
   "slug": "xero-shoes-tiktok-selfie-01",
@@ -1197,7 +1256,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "9:16",
   "media": "/ads/xero-shoes-tiktok-selfie-01.webp",
-  "sort_order": 34
+  "sort_order": 34,
+  "rank": 37
  },
  {
   "slug": "kindred-bravely-tiktok-selfie-01",
@@ -1216,7 +1276,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "9:16",
   "media": "/ads/kindred-bravely-tiktok-selfie-01.webp",
-  "sort_order": 36
+  "sort_order": 36,
+  "rank": 55
  },
  {
   "slug": "legendairy-milk-08-breaking-news-one-ounce",
@@ -1235,7 +1296,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/pages/legendairy-milk-quiz",
   "aspect_ratio": "1:1",
   "media": "/ads/legendairy-milk-08-breaking-news-one-ounce.webp",
-  "sort_order": 37
+  "sort_order": 37,
+  "rank": 3
  },
  {
   "slug": "smithey-tiktok-selfie-01",
@@ -1254,7 +1316,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "9:16",
   "media": "/ads/smithey-tiktok-selfie-01.webp",
-  "sort_order": 38
+  "sort_order": 38,
+  "rank": 44
  },
  {
   "slug": "xero-shoes-news-frame-01",
@@ -1273,7 +1336,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-news-frame-01.webp",
-  "sort_order": 39
+  "sort_order": 39,
+  "rank": 56
  },
  {
   "slug": "kindred-bravely-news-frame-01",
@@ -1292,7 +1356,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-news-frame-01.webp",
-  "sort_order": 41
+  "sort_order": 41,
+  "rank": 62
  },
  {
   "slug": "legendairy-milk-09-receipt-milk-supply-to-do-list",
@@ -1311,7 +1376,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/collections/lactation-supplements",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-09-receipt-milk-supply-to-do-list.webp",
-  "sort_order": 42
+  "sort_order": 42,
+  "rank": 26
  },
  {
   "slug": "smithey-news-frame-01",
@@ -1330,7 +1396,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-news-frame-01.webp",
-  "sort_order": 43
+  "sort_order": 43,
+  "rank": 45
  },
  {
   "slug": "xero-shoes-breaking-news-01",
@@ -1349,7 +1416,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-breaking-news-01.webp",
-  "sort_order": 44
+  "sort_order": 44,
+  "rank": 46
  },
  {
   "slug": "kindred-bravely-note-01",
@@ -1368,7 +1436,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-note-01.webp",
-  "sort_order": 46
+  "sort_order": 46,
+  "rank": 108
  },
  {
   "slug": "legendairy-milk-10-fenugreek-blend-vs-liquid-gold",
@@ -1387,7 +1456,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "1:1",
   "media": "/ads/legendairy-milk-10-fenugreek-blend-vs-liquid-gold.webp",
-  "sort_order": 47
+  "sort_order": 47,
+  "rank": 90
  },
  {
   "slug": "smithey-breaking-news-01",
@@ -1406,7 +1476,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/collections/castiron",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-breaking-news-01.webp",
-  "sort_order": 48
+  "sort_order": 48,
+  "rank": 57
  },
  {
   "slug": "xero-shoes-text-message-01",
@@ -1425,7 +1496,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-coast-women",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-text-message-01.webp",
-  "sort_order": 49
+  "sort_order": 49,
+  "rank": 47
  },
  {
   "slug": "kindred-bravely-review-01",
@@ -1444,7 +1516,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-review-01.webp",
-  "sort_order": 51
+  "sort_order": 51,
+  "rank": 75
  },
  {
   "slug": "legendairy-milk-11-founder-kitchen-table-2016",
@@ -1463,7 +1536,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/pages/about-us",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-11-founder-kitchen-table-2016.webp",
-  "sort_order": 52
+  "sort_order": 52,
+  "rank": 76
  },
  {
   "slug": "smithey-text-message-01",
@@ -1482,7 +1556,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-10-cast-iron-chef-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-text-message-01.webp",
-  "sort_order": 53
+  "sort_order": 53,
+  "rank": 58
  },
  {
   "slug": "xero-shoes-receipt-01",
@@ -1501,7 +1576,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-receipt-01.webp",
-  "sort_order": 54
+  "sort_order": 54,
+  "rank": 27
  },
  {
   "slug": "kindred-bravely-us-vs-them-01",
@@ -1520,7 +1596,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/french-terry-nursing-sleep-bra",
   "aspect_ratio": "1:1",
   "media": "/ads/kindred-bravely-us-vs-them-01.webp",
-  "sort_order": 56
+  "sort_order": 56,
+  "rank": 91
  },
  {
   "slug": "legendairy-milk-12-liquid-gold-olympic-quote-podium",
@@ -1539,7 +1616,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-12-liquid-gold-olympic-quote-podium.webp",
-  "sort_order": 57
+  "sort_order": 57,
+  "rank": 83
  },
  {
   "slug": "smithey-receipt-01",
@@ -1558,7 +1636,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-receipt-01.webp",
-  "sort_order": 58
+  "sort_order": 58,
+  "rank": 63
  },
  {
   "slug": "xero-shoes-review-01",
@@ -1577,7 +1656,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/prio-women",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-review-01.webp",
-  "sort_order": 59
+  "sort_order": 59,
+  "rank": 92
  },
  {
   "slug": "kindred-bravely-problem-scene-01",
@@ -1596,7 +1676,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/simply-sublime-nursing-bra-blue-shadow",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-problem-scene-01.webp",
-  "sort_order": 61
+  "sort_order": 61,
+  "rank": 59
  },
  {
   "slug": "legendairy-milk-13-review-freezer-stash",
@@ -1615,7 +1696,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-13-review-freezer-stash.webp",
-  "sort_order": 62
+  "sort_order": 62,
+  "rank": 64
  },
  {
   "slug": "smithey-review-01",
@@ -1634,7 +1716,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-review-01.webp",
-  "sort_order": 63
+  "sort_order": 63,
+  "rank": 93
  },
  {
   "slug": "xero-shoes-problem-scene-01",
@@ -1653,7 +1736,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/pages/why-barefoot-shoes",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-problem-scene-01.webp",
-  "sort_order": 64
+  "sort_order": 64,
+  "rank": 77
  },
  {
   "slug": "kindred-bravely-product-01",
@@ -1672,7 +1756,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/simply-sublime-nursing-bra-blue-shadow",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-product-01.webp",
-  "sort_order": 66
+  "sort_order": 66,
+  "rank": 101
  },
  {
   "slug": "legendairy-milk-14-meme-instagram-vs-3-am",
@@ -1691,7 +1776,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/collections/breastfeeding",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-14-meme-instagram-vs-3-am.webp",
-  "sort_order": 67
+  "sort_order": 67,
+  "rank": 14
  },
  {
   "slug": "smithey-campfire-01",
@@ -1710,7 +1796,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-campfire-01.webp",
-  "sort_order": 68
+  "sort_order": 68,
+  "rank": 94
  },
  {
   "slug": "xero-shoes-warranty-01",
@@ -1729,7 +1816,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/collections/best-sellers",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-warranty-01.webp",
-  "sort_order": 69
+  "sort_order": 69,
+  "rank": 65
  },
  {
   "slug": "kindred-bravely-lifestyle-01",
@@ -1748,7 +1836,8 @@ window.ADS = [
   "destination_url": "https://www.kindredbravely.com/products/bamboo-wide-leg-maternity-postpartum-lounge-pant-fig",
   "aspect_ratio": "4:5",
   "media": "/ads/kindred-bravely-lifestyle-01.webp",
-  "sort_order": 71
+  "sort_order": 71,
+  "rank": 95
  },
  {
   "slug": "legendairy-milk-15-six-organic-herbs-flat-lay",
@@ -1767,7 +1856,8 @@ window.ADS = [
   "destination_url": "https://www.legendairymilk.com/products/liquid-gold-organic-lactation-blend",
   "aspect_ratio": "4:5",
   "media": "/ads/legendairy-milk-15-six-organic-herbs-flat-lay.webp",
-  "sort_order": 72
+  "sort_order": 72,
+  "rank": 100
  },
  {
   "slug": "smithey-problem-scrub-01",
@@ -1786,7 +1876,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-problem-scrub-01.webp",
-  "sort_order": 73
+  "sort_order": 73,
+  "rank": 78
  },
  {
   "slug": "xero-shoes-winter-boot-01",
@@ -1805,7 +1896,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/alpine-women",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-winter-boot-01.webp",
-  "sort_order": 74
+  "sort_order": 74,
+  "rank": 96
  },
  {
   "slug": "smithey-before-after-01",
@@ -1824,7 +1916,8 @@ window.ADS = [
   "destination_url": "https://smithey.com/products/no-12-cast-iron-skillet",
   "aspect_ratio": "4:5",
   "media": "/ads/smithey-before-after-01.webp",
-  "sort_order": 76
+  "sort_order": 76,
+  "rank": 84
  },
  {
   "slug": "xero-shoes-trail-01",
@@ -1843,7 +1936,8 @@ window.ADS = [
   "destination_url": "https://xeroshoes.com/products/mesa-summit-wp-women",
   "aspect_ratio": "4:5",
   "media": "/ads/xero-shoes-trail-01.webp",
-  "sort_order": 77
+  "sort_order": 77,
+  "rank": 97
  },
  {
   "slug": "mars-men-dad-bod-video-01",
@@ -1865,7 +1959,8 @@ window.ADS = [
   "sort_order": 102,
   "featured": true,
   "poster_url": "/ads/mars-men-dad-bod-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e5cf40b7e0a28e946247"
+  "video_embed": "https://play.gumlet.io/embed/6b04e5cf40b7e0a28e946247",
+  "rank": 7
  },
  {
   "slug": "primals-1938-bristles-video-01",
@@ -1887,7 +1982,8 @@ window.ADS = [
   "sort_order": 99,
   "featured": true,
   "poster_url": "/ads/primals-1938-bristles-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e66545faabbfced097d8"
+  "video_embed": "https://play.gumlet.io/embed/6b04e66545faabbfced097d8",
+  "rank": 28
  },
  {
   "slug": "scandi-gum-gum-vs-mint-video-01",
@@ -1909,7 +2005,8 @@ window.ADS = [
   "sort_order": 96,
   "featured": true,
   "poster_url": "/ads/scandi-gum-gum-vs-mint-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e67b40b7e0a28e94638c"
+  "video_embed": "https://play.gumlet.io/embed/6b04e67b40b7e0a28e94638c",
+  "rank": 13
  },
  {
   "slug": "kittysupps-problem-photo-01",
@@ -1929,7 +2026,8 @@ window.ADS = [
   "aspect_ratio": "3:4",
   "media": "/ads/kittysupps-problem-photo-01.webp",
   "sort_order": 94,
-  "featured": true
+  "featured": true,
+  "rank": 6
  },
  {
   "slug": "tradesman-dad-song-video-01",
@@ -1951,7 +2049,8 @@ window.ADS = [
   "sort_order": 93,
   "featured": true,
   "poster_url": "/ads/tradesman-dad-song-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e69045faabbfced0982b"
+  "video_embed": "https://play.gumlet.io/embed/6b04e69045faabbfced0982b",
+  "rank": 21
  },
  {
   "slug": "tiny-explorings-funeral-01",
@@ -1971,7 +2070,8 @@ window.ADS = [
   "aspect_ratio": "4:5",
   "media": "/ads/tiny-explorings-funeral-01.webp",
   "sort_order": 91,
-  "featured": true
+  "featured": true,
+  "rank": 1
  },
  {
   "slug": "blissal-american-vs-japanese-video-01",
@@ -1993,7 +2093,8 @@ window.ADS = [
   "sort_order": 90,
   "featured": true,
   "poster_url": "/ads/blissal-american-vs-japanese-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e56640b7e0a28e94617a"
+  "video_embed": "https://play.gumlet.io/embed/6b04e56640b7e0a28e94617a",
+  "rank": 5
  },
  {
   "slug": "the-odorless-cat-coffee-jar-01",
@@ -2013,7 +2114,8 @@ window.ADS = [
   "aspect_ratio": "1:1",
   "media": "/ads/the-odorless-cat-coffee-jar-01.webp",
   "sort_order": 89,
-  "featured": true
+  "featured": true,
+  "rank": 24
  },
  {
   "slug": "hello-klean-curly-hair-video-01",
@@ -2035,7 +2137,8 @@ window.ADS = [
   "sort_order": 87,
   "featured": true,
   "poster_url": "/ads/hello-klean-curly-hair-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e59740b7e0a28e9461c5"
+  "video_embed": "https://play.gumlet.io/embed/6b04e59740b7e0a28e9461c5",
+  "rank": 42
  },
  {
   "slug": "uromend-side-effects-01",
@@ -2055,7 +2158,8 @@ window.ADS = [
   "aspect_ratio": "9:16",
   "media": "/ads/uromend-side-effects-01.webp",
   "sort_order": 86,
-  "featured": true
+  "featured": true,
+  "rank": 4
  },
  {
   "slug": "nero-plastic-upgrade-video-01",
@@ -2077,7 +2181,8 @@ window.ADS = [
   "sort_order": 84,
   "featured": true,
   "poster_url": "/ads/nero-plastic-upgrade-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e5ed40b7e0a28e946274"
+  "video_embed": "https://play.gumlet.io/embed/6b04e5ed40b7e0a28e946274",
+  "rank": 15
  },
  {
   "slug": "gotyu-clay-scene-01",
@@ -2097,7 +2202,8 @@ window.ADS = [
   "aspect_ratio": "3:4",
   "media": "/ads/gotyu-clay-scene-01.webp",
   "sort_order": 82,
-  "featured": true
+  "featured": true,
+  "rank": 2
  },
  {
   "slug": "ilyra-cherry-firefighter-video-01",
@@ -2119,7 +2225,8 @@ window.ADS = [
   "sort_order": 81,
   "featured": true,
   "poster_url": "/ads/ilyra-cherry-firefighter-video-01.webp",
-  "video_embed": "https://play.gumlet.io/embed/6b04e5ab45faabbfced09669"
+  "video_embed": "https://play.gumlet.io/embed/6b04e5ab45faabbfced09669",
+  "rank": 25
  },
  {
   "slug": "noreno-split-face-01",
@@ -2139,7 +2246,8 @@ window.ADS = [
   "aspect_ratio": "1:1",
   "media": "/ads/noreno-split-face-01.webp",
   "sort_order": 80,
-  "featured": true
+  "featured": true,
+  "rank": 29
  },
  {
   "slug": "cozy-heaven-thermal-bed-01",
@@ -2159,6 +2267,7 @@ window.ADS = [
   "aspect_ratio": "9:16",
   "media": "/ads/cozy-heaven-thermal-bed-01.webp",
   "sort_order": 79,
-  "featured": true
+  "featured": true,
+  "rank": 12
  }
 ];
