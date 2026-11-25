@@ -624,10 +624,25 @@ html { background: var(--navy-900); }
   #chips .chip, #chips .clear { flex: none; white-space: nowrap; }
 }
 @media (max-width: 480px) {
-  .tab { padding: 0 .6rem; font-size: .88rem; min-height: 40px; }
   .tab .full { display: none; }
   .tab .short { display: inline; }
-  .tabs { gap: 2px; padding: 3px; }
   .toolbar .row { gap: 8px; }
   .toolbar .search { flex: 1 1 140px; }
+}
+
+/* toggles: same text spacing as the filter buttons (Niche, Format, ...) at every width */
+.toolbar .tab, .toolbar .tab:is(*) { padding: 0 .95rem; font-size: .92rem; }
+@media (max-width: 480px) {
+  /* phones: toggles and filter buttons share one tighter spacing, so both toggles fit on one row */
+  .toolbar .tab, .toolbar .chip, .toolbar .shuffle { padding: 0 .7rem; font-size: .88rem; }
+  .toolbar .tabs { gap: 2px; padding: 3px; }
+}
+
+/* phones (touch): the filter buttons open the phone's own picker. The native <select multiple> lies invisible
+   over its button; the button underneath shows the label and the count badge. Desktop keeps the custom list. */
+.native-pick { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .chip-wrap .native-pick { display: block; position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; color-scheme: dark; appearance: none; -webkit-appearance: none; border: 0; }
+  .native-pick option { background: #0D1B33; color: #F1F4F8; }
+  .chip-wrap .pop { display: none !important; }
 }

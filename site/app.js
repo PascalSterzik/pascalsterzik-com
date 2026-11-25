@@ -399,7 +399,8 @@
       let vals = [...new Set(ADS.map(a => a[k]))];
       vals.sort(k === 'awareness_stage' ? (x, y) => STAGE_ORDER.indexOf(x) - STAGE_ORDER.indexOf(y) : (x, y) => fmt(x).localeCompare(fmt(y)));
       return `<div class="chip-wrap"><button class="chip" data-chip="${k}" aria-expanded="false" aria-haspopup="true">${label}<span class="n" hidden></span>${chevron}</button>
-        <div class="pop" hidden data-pop="${k}">${vals.map(v => `<label><input type="checkbox" value="${esc(v)}" data-f="${k}">${esc(fmt(v))}<span class="c">${ADS.filter(a => a[k] === v).length}</span></label>`).join('')}</div></div>`;
+        <div class="pop" hidden data-pop="${k}">${vals.map(v => `<label><input type="checkbox" value="${esc(v)}" data-f="${k}">${esc(fmt(v))}<span class="c">${ADS.filter(a => a[k] === v).length}</span></label>`).join('')}</div>
+        <select class="native-pick" multiple data-native="${k}" aria-label="${label}">${vals.map(v => `<option value="${esc(v)}">${esc(fmt(v))}</option>`).join('')}</select></div>`;
     }).join('') + `<button class="clear" id="clear-all" hidden>Clear all</button>`;
     chipsEl.addEventListener('click', e => {
       const chip = e.target.closest('.chip');
@@ -412,6 +413,8 @@
       if (e.target.id === 'clear-all') clearAll();
     });
     chipsEl.addEventListener('change', e => {
+      const sel = e.target.closest && e.target.closest('select[data-native]');
+      if (sel) { state.f[sel.dataset.native] = new Set([...sel.selectedOptions].map(o => o.value)); render(); return; }
       const i = e.target; if (!i.dataset.f) return;
       i.checked ? state.f[i.dataset.f].add(i.value) : state.f[i.dataset.f].delete(i.value);
       render();
@@ -457,6 +460,8 @@
     function render() {
       const list = current();
       const nFilters = Object.values(state.f).reduce((n, s) => n + s.size, 0);
+      chipsEl.querySelectorAll('input[data-f]').forEach(i => { i.checked = state.f[i.dataset.f].has(i.value); });
+      chipsEl.querySelectorAll('select[data-native]').forEach(sel => [...sel.options].forEach(o => { o.selected = state.f[sel.dataset.native].has(o.value); }));
       chipsEl.querySelectorAll('.chip').forEach(c => { const n = state.f[c.dataset.chip].size; const b = c.querySelector('.n'); b.hidden = !n; b.textContent = n; c.classList.toggle('active', !!n); });
       document.getElementById('clear-all').hidden = !(nFilters || state.q || state.lang !== 'all');
       empty.hidden = list.length > 0;
