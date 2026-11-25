@@ -606,3 +606,4 @@ html { background: var(--navy-900); }
 .shuffle:active { transform: scale(.97); }
 .shuffle:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
 .shuffle svg { color: var(--amber); }
+.toolbar .search { flex: 1 1 180px; }
