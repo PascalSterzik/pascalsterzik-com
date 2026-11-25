@@ -19,7 +19,7 @@
     'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Nero': '/logos/nero.png', 'Purely Nutrient': '/logos/purely-nutrient.png', 'Mirelia': '/logos/mirelia.png',
     'Deutsches Gesundheits Journal': '/logos/dgj.png', 'Tasty Dose': '/logos/tasty-dose.png', 'Ryer': '/logos/ryer.png', 'Vusilia': '/logos/vusilia.png', 'Fairment': '/logos/fairment.png',
     'Dr. Müller': '/logos/dr-mueller.png', 'Veluna': '/logos/veluna.png', 'TryMoin': '/logos/trymoin.png', 'TryJello': '/logos/tryjello.png', 'The Better Cat': '/logos/the-better-cat.png',
-    "Men's Best Basics": '/logos/mens-best.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Kuro': '/logos/kuro.png', 'Ilyra': '/logos/ilyra.png' };
+    "Men's Best Basics": '/logos/mens-best.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Kuro': '/logos/kuro-heart.png', 'Ilyra': '/logos/ilyra.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
   const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
   const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
@@ -399,11 +399,11 @@
       let vals = [...new Set(ADS.map(a => a[k]))];
       vals.sort(k === 'awareness_stage' ? (x, y) => STAGE_ORDER.indexOf(x) - STAGE_ORDER.indexOf(y) : (x, y) => fmt(x).localeCompare(fmt(y)));
       return `<div class="chip-wrap"><button class="chip" data-chip="${k}" aria-expanded="false" aria-haspopup="true">${label}<span class="n" hidden></span>${chevron}</button>
-        <div class="pop" hidden data-pop="${k}">${vals.map(v => `<label><input type="checkbox" value="${esc(v)}" data-f="${k}">${esc(fmt(v))}<span class="c">${ADS.filter(a => a[k] === v).length}</span></label>`).join('')}</div>
-        <select class="native-pick" multiple data-native="${k}" aria-label="${label}">${vals.map(v => `<option value="${esc(v)}">${esc(fmt(v))}</option>`).join('')}</select></div>`;
+        <div class="pop" hidden data-pop="${k}">${vals.map(v => `<label><input type="checkbox" value="${esc(v)}" data-f="${k}">${esc(fmt(v))}<span class="c">${ADS.filter(a => a[k] === v).length}</span></label>`).join('')}</div></div>`;
     }).join('') + `<button class="clear" id="clear-all" hidden>Clear all</button>`;
     chipsEl.addEventListener('click', e => {
       const chip = e.target.closest('.chip');
+      if (chip && narrow.matches) { closePops(); openSheet(chip.dataset.chip); e.stopPropagation(); return; }
       if (chip) {
         const pop = chip.nextElementSibling, open = pop.hidden;
         closePops(); pop.hidden = !open; chip.setAttribute('aria-expanded', open);
@@ -413,8 +413,6 @@
       if (e.target.id === 'clear-all') clearAll();
     });
     chipsEl.addEventListener('change', e => {
-      const sel = e.target.closest && e.target.closest('select[data-native]');
-      if (sel) { state.f[sel.dataset.native] = new Set([...sel.selectedOptions].map(o => o.value)); render(); return; }
       const i = e.target; if (!i.dataset.f) return;
       i.checked ? state.f[i.dataset.f].add(i.value) : state.f[i.dataset.f].delete(i.value);
       render();
@@ -434,6 +432,58 @@
     function closePops() { chipsEl.querySelectorAll('.pop').forEach(p => p.hidden = true); chipsEl.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-expanded', 'false')); }
     document.addEventListener('click', e => { if (!e.target.closest('.chip-wrap')) closePops(); });
     addEventListener('keydown', e => { if (e.key === 'Escape') closePops(); });
+    // ---------- Phone bottom sheet (copy of the dashboard's BottomSheet) ----------
+    // Covers the page, a tap outside or "Done" closes it, swipe down closes it, the page behind does not scroll,
+    // rows are sized for a thumb. Picks apply right away, like the desktop list.
+    const narrow = matchMedia('(max-width: 639px)');
+    const sheet = document.createElement('div');
+    sheet.className = 'sheet'; sheet.hidden = true;
+    sheet.innerHTML = `<div class="sheet-scrim" data-sheet-close></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+        <div class="sheet-grip" aria-hidden="true"></div>
+        <div class="sheet-head"><h4 id="sheet-title"></h4><div class="sheet-actions"><button type="button" class="sheet-clear">Clear</button><button type="button" class="sheet-done" data-sheet-close>Done</button></div></div>
+        <div class="sheet-body"></div>
+      </div>`;
+    document.body.appendChild(sheet);
+    const sheetPanel = sheet.querySelector('.sheet-panel'), sheetBody = sheet.querySelector('.sheet-body');
+    let sheetKey = null, prevOverflow = '';
+    function openSheet(k) {
+      sheetKey = k;
+      const [, label, fmt] = FILTERS.find(f => f[0] === k);
+      let vals = [...new Set(ADS.map(a => a[k]))];
+      vals.sort(k === 'awareness_stage' ? (x, y) => STAGE_ORDER.indexOf(x) - STAGE_ORDER.indexOf(y) : (x, y) => fmt(x).localeCompare(fmt(y)));
+      sheet.querySelector('#sheet-title').textContent = label;
+      sheetBody.innerHTML = vals.map(v => `<label class="sheet-row"><span>${esc(fmt(v))}</span><span class="c">${ADS.filter(a => a[k] === v).length}</span><input type="checkbox" value="${esc(v)}"${state.f[k].has(v) ? ' checked' : ''}></label>`).join('');
+      sheetBody.scrollTop = 0;
+      prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
+      sheet.hidden = false;
+      requestAnimationFrame(() => sheet.classList.add('open'));
+    }
+    function closeSheet() {
+      if (sheet.hidden) return;
+      sheet.classList.remove('open'); sheetPanel.style.transform = '';
+      document.body.style.overflow = prevOverflow;
+      setTimeout(() => { sheet.hidden = true; }, 160);
+      sheetKey = null;
+    }
+    sheet.addEventListener('click', e => {
+      if (e.target.closest('[data-sheet-close]')) closeSheet();
+      if (e.target.closest('.sheet-clear') && sheetKey) { state.f[sheetKey].clear(); sheetBody.querySelectorAll('input').forEach(i => i.checked = false); render(); }
+    });
+    sheetBody.addEventListener('change', e => {
+      const i = e.target; if (!sheetKey || i.type !== 'checkbox') return;
+      i.checked ? state.f[sheetKey].add(i.value) : state.f[sheetKey].delete(i.value);
+      render();
+    });
+    addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+    narrow.addEventListener('change', () => { if (!narrow.matches) closeSheet(); });
+    // swipe down to close; only starts when the list is scrolled to the top, so it never fights scrolling the list
+    let sy = null, dy = 0;
+    sheetPanel.addEventListener('touchstart', e => { sy = sheetBody.scrollTop > 0 && sheetBody.contains(e.target) ? null : e.touches[0].clientY; dy = 0; }, { passive: true });
+    sheetPanel.addEventListener('touchmove', e => { if (sy === null) return; dy = Math.max(0, e.touches[0].clientY - sy); sheetPanel.style.transition = 'none'; sheetPanel.style.transform = dy ? `translateY(${dy}px)` : ''; }, { passive: true });
+    const endSwipe = () => { if (sy === null) return; sy = null; sheetPanel.style.transition = ''; if (dy > 90) closeSheet(); else sheetPanel.style.transform = ''; dy = 0; };
+    sheetPanel.addEventListener('touchend', endSwipe, { passive: true }); sheetPanel.addEventListener('touchcancel', endSwipe, { passive: true });
+
     function clearAll() {
       Object.values(state.f).forEach(s => s.clear()); state.q = ''; document.getElementById('q').value = '';
       state.lang = 'all'; langEl.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x.dataset.lang === 'all'));
@@ -461,7 +511,6 @@
       const list = current();
       const nFilters = Object.values(state.f).reduce((n, s) => n + s.size, 0);
       chipsEl.querySelectorAll('input[data-f]').forEach(i => { i.checked = state.f[i.dataset.f].has(i.value); });
-      chipsEl.querySelectorAll('select[data-native]').forEach(sel => [...sel.options].forEach(o => { o.selected = state.f[sel.dataset.native].has(o.value); }));
       chipsEl.querySelectorAll('.chip').forEach(c => { const n = state.f[c.dataset.chip].size; const b = c.querySelector('.n'); b.hidden = !n; b.textContent = n; c.classList.toggle('active', !!n); });
       document.getElementById('clear-all').hidden = !(nFilters || state.q || state.lang !== 'all');
       empty.hidden = list.length > 0;
