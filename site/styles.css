@@ -599,3 +599,10 @@ html { background: var(--navy-900); }
 .play-inline.playing { cursor: default; background: #000; }
 .play-inline:focus-visible { outline: 3px solid var(--amber); outline-offset: -3px; }
 .ad-card.is-video:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+
+/* ---------- Portfolio: Shuffle button instead of Sort (2026-11-25) ---------- */
+.shuffle { min-height: 48px; display: inline-flex; align-items: center; gap: .5rem; padding: 0 1.15rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: var(--navy-800); color: var(--on-dark); font: 500 .95rem var(--font-body); cursor: pointer; transition: border-color .2s, background-color .2s, transform .15s; }
+.shuffle:hover { border-color: var(--amber); }
+.shuffle:active { transform: scale(.97); }
+.shuffle:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+.shuffle svg { color: var(--amber); }

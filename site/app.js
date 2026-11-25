@@ -12,17 +12,14 @@
   const initials = n => n.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const color = n => AVATAR[brands.indexOf(n) % AVATAR.length];
   // Design phase: logos from each brand's own site. In the build this is portfolio_ads.brand_logo_url.
-  const LOGOS = { 'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png',
-    'Mars Men': '/logos/mars-men.png',
-    'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'Scandi Gum': '/logos/scandi-gum.png',
-    'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png',
-    'The Odorless Cat': '/logos/the-odorless-cat.png', 'Resilia': '/logos/resilia.png', 'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Norse Organics': '/logos/norse-organics.png',
-    'Nero': '/logos/nero.png',
-    'Purely Nutrient': '/logos/purely-nutrient.png', 'Mirelia': '/logos/mirelia.png', 'Deutsches Gesundheits Journal': '/logos/dgj.png', 'Tasty Dose': '/logos/tasty-dose.png',
-    'Ryer': '/logos/ryer.png', 'Vusilia': '/logos/vusilia.png', 'Mammaly': '/logos/mammaly.png',
-    'Fairment': '/logos/fairment.png', 'Dr. Müller': '/logos/dr-mueller.png', 'Veluna': '/logos/veluna.png', 'HOLY': '/logos/holy.png', 'TryMoin': '/logos/trymoin.png',
-    'TryJello': '/logos/tryjello.png', 'Snocks': '/logos/snocks.png', 'The Better Cat': '/logos/the-better-cat.png', 'Kapten & Son': '/logos/kapten-son.png',
-    'SHEKO': '/logos/sheko.png', "Men's Best Basics": '/logos/mens-best.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png', 'Primal Viking': '/logos/primal-viking.png' };
+  const LOGOS = {
+    'Fussy': '/logos/fussy.svg', 'Kindred Bravely': '/logos/kindred-bravely.png', 'Legendairy Milk': '/logos/legendairy-milk.png', 'Smithey Ironware': '/logos/smithey.png', 'Xero Shoes': '/logos/xero-shoes.png',
+    'Mars Men': '/logos/mars-men.png', 'Pepper': '/logos/pepper.png', 'Primals': '/logos/primals.png', 'The Ice Pod': '/logos/the-ice-pod.png', 'Scandi Gum': '/logos/scandi-gum.png',
+    'KittySupps': '/logos/kittysupps.png', 'Tradesman Nutrition': '/logos/tradesman-nutrition.png', 'Tiny Explorings': '/logos/tiny-explorings.png', 'Blissal': '/logos/blissal.png', 'The Odorless Cat': '/logos/the-odorless-cat.png',
+    'Hello Klean': '/logos/hello-klean.png', 'Uromend': '/logos/uromend.png', 'Nero': '/logos/nero.png', 'Purely Nutrient': '/logos/purely-nutrient.png', 'Mirelia': '/logos/mirelia.png',
+    'Deutsches Gesundheits Journal': '/logos/dgj.png', 'Tasty Dose': '/logos/tasty-dose.png', 'Ryer': '/logos/ryer.png', 'Vusilia': '/logos/vusilia.png', 'Fairment': '/logos/fairment.png',
+    'Dr. Müller': '/logos/dr-mueller.png', 'Veluna': '/logos/veluna.png', 'TryMoin': '/logos/trymoin.png', 'TryJello': '/logos/tryjello.png', 'The Better Cat': '/logos/the-better-cat.png',
+    "Men's Best Basics": '/logos/mens-best.png', 'PMD Beauty': '/logos/pmd-beauty.png', 'GOTYU': '/logos/gotyu.png', 'Noreno': '/logos/noreno.png', 'Cozy Heaven': '/logos/cozy-heaven.png' };
   // Video ads (Gumlet): the card shows the poster with a play badge, the popup plays the Gumlet player
   const PLAY = '<span class="play-badge" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
   const embedURL = u => u + (u.includes('?') ? '&' : '?') + 'autoplay=true&preload=true&loop=false';
@@ -353,7 +350,7 @@
   // ---------- Portfolio library ----------
   const lib = document.getElementById('lib');
   if (lib) {
-    const state = { tab: 'all', lang: 'all', q: '', sort: 'featured', f: { niche: new Set(), ad_type: new Set(), format: new Set(), awareness_stage: new Set(), brand_name: new Set(), language: new Set() } };
+    const state = { tab: 'all', lang: 'all', q: '', rand: null, f: { niche: new Set(), ad_type: new Set(), format: new Set(), awareness_stage: new Set(), brand_name: new Set(), language: new Set() } };
     const FILTERS = [
       ['niche', 'Niche', v => v],
       ['ad_type', 'Ad type', v => cap(v)],
@@ -409,16 +406,19 @@
       chipsEl.querySelectorAll('input').forEach(i => i.checked = false); render();
     }
     document.getElementById('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
-    document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+    // Shuffle: every click deals the ads in a new random order (filters still apply)
+    document.getElementById('shuffle').addEventListener('click', () => {
+      state.rand = new Map(ADS.map(a => [a.slug, Math.random()]));
+      render();
+    });
 
     function current() {
       let list = ADS.filter(a => (state.tab === 'all' || a.format === state.tab)
         && (state.lang === 'all' || a.language === state.lang)
         && Object.entries(state.f).every(([k, s]) => !s.size || s.has(a[k]))
         && (!state.q || [a.brand_name, a.product, a.niche, a.ad_type, a.headline, a.primary_text].join(' ').toLowerCase().includes(state.q)));
-      if (state.sort === 'featured') list = list.slice().sort((x, y) => (y.featured ? 1 : 0) - (x.featured ? 1 : 0)); // stable: new ads first, the rest in file order
-      if (state.sort === 'brand') list = list.slice().sort((x, y) => x.brand_name.localeCompare(y.brand_name) || x.sort_order - y.sort_order);
-      if (state.sort === 'newest') list = list.slice().sort((x, y) => y.sort_order - x.sort_order);
+      if (state.rand) list = list.slice().sort((x, y) => state.rand.get(x.slug) - state.rand.get(y.slug));
+      else list = list.slice().sort((x, y) => (y.featured ? 1 : 0) - (x.featured ? 1 : 0)); // stable: new ads first, the rest in file order
       return list;
     }
     const empty = document.getElementById('empty');
