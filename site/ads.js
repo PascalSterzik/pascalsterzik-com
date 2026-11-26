@@ -2053,27 +2053,6 @@ window.ADS = [
   "rank": 21
  },
  {
-  "slug": "tiny-explorings-funeral-01",
-  "brand_name": "Tiny Explorings",
-  "brand_domain": "tinyexplorings.com",
-  "product": "Sock Shoes",
-  "niche": "Toddler barefoot shoes",
-  "ad_type": "character scene",
-  "format": "image",
-  "awareness_stage": "solution_aware",
-  "language": "en",
-  "primary_text": "🎃 THE HALLOWEEN SALE IS LIVE 🎃\n\nTrick-or-treating with a toddler: two hours of porch steps, gravel driveways and wet leaves. In costume feet with no grip.\n\nTheir feet are still 75% cartilage. They learn to balance by feeling the ground, and a stiff, boxy sole (or a slippery costume bootie) takes that away.\n\nTiny Explorings™ have a 3mm sole that bends completely flat. Fold it in half, it springs back. On their feet, it moves the way a bare foot does.\n\n🦶 Toe box 8% wider than standard: toes spread instead of curl\n🛡️ 40% more grip on hardwood and tile\n🧦 Pulls on like a sock: straight over the costume tights, no straps, no velcro, no fight\n🧺 Machine washable: face paint, pumpkin guts and all\n\nSteadier steps. Better balance. More candy, fewer tumbles.\n\n⭐ 4.9 stars from 500,000+ parents. Sizes 6–12M through 2–4Y.\n💯 90-day money-back guarantee: if they kick them off halfway down the street, you get every cent back. No forms, no questions.\n\nBuy 1 pair, get 2 FREE.\nBuy 3 pairs, get 6 FREE + 4 pairs of non-slip socks ($40 value) 🧦\n\nPlus free wash bags and premium insoles with every order 🎁\n\n👉 Tap Shop Now and pick their colors.",
-  "headline": "Up To 6 FREE Pairs + Free Gifts 🎃",
-  "description": "Buy 1 pair, get 2 free",
-  "cta": "Shop Now",
-  "destination_url": "https://www.tinyexplorings.com/products/tiny-explorings-halloween",
-  "aspect_ratio": "4:5",
-  "media": "/ads/tiny-explorings-funeral-01.webp",
-  "sort_order": 91,
-  "featured": true,
-  "rank": 1
- },
- {
   "slug": "blissal-american-vs-japanese-video-01",
   "brand_name": "Blissal",
   "brand_domain": "blissal.com",
